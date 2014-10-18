@@ -1,0 +1,2 @@
+#!/bin/bash
+plink -N -v user@hostname -P 22 -D 127.0.0.1:7070 -pw password

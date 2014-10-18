@@ -1,0 +1,22 @@
+#!/bin/bash
+# git cdc -- change date commit
+# Usage: git-cdc "SHA1 of commit" "date to change" [Option]
+# date format is YYYY-mm-dd HH:MM:SS
+# From https://git.wiki.kernel.org/index.php/GitFaq#How_can_I_tweak_the_date_of_a_commit_in_the_repo.3F
+commit="$1"
+datecal="$2"
+if [ $# -eq 3 ]; then
+	goption="$3"
+fi
+date_r=$(date -R -d "$datecal")
+
+if [[ -z "$commit" ]]; then
+    exit 0
+fi
+
+git filter-branch $goption --env-filter \
+"if test \$GIT_COMMIT = '$commit'
+then
+    export GIT_AUTHOR_DATE='$date_r'
+    export GIT_COMMITTER_DATE='$date_r'
+fi" && rm -fr "$(git rev-parse --git-dir)/refs/original/"

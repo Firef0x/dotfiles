@@ -1,0 +1,27 @@
+{
+	"name": "Solarized dark for shell",
+	"groups": {
+		"user":               { "fg": "solarized:magenta", "bg": "blue", "attr": ["bold"] },
+		"superuser":          { "fg": "brightyellow", "bg": "red", "attr": ["bold"] },
+		"virtualenv":         { "fg": "solarized:magenta", "bg": "green" },
+		"branch":             { "fg": "gray1", "bg": "steelblue" },
+		"branch_dirty":       { "fg": "yellow", "bg": "steelblue" },
+		"branch_clean":       { "fg": "gray1", "bg": "steelblue" },
+		"cwd":                { "fg": "brightyellow", "bg": "darkblue" },
+		"cwd:current_folder": { "fg": "brightyellow", "bg": "mediumpurple", "attr": ["bold"] },
+		"cwd:divider":        { "fg": "gray1", "bg": "darkblue" },
+		"hostname":           { "fg": "solarized:magenta", "bg": "darkblue" },
+		"exit_fail":          { "fg": "brightyellow", "bg": "red" },
+		"exit_success":       { "fg": "solarized:magenta", "bg": "green" },
+		"time":               { "fg": "brightyellow", "bg": "darkblue" },
+		"time:divider":       { "fg": "gray1", "bg": "darkblue" },
+		"environment":        { "fg": "solarized:magenta", "bg": "green" }
+	},
+	"mode_translations": {
+		"vicmd": {
+			"groups": {
+				"mode": { "fg": "solarized:base3", "bg": "solarized:blue", "attr": ["bold"] }
+			}
+		}
+	}
+}

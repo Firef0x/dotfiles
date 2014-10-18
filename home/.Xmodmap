@@ -1,0 +1,5 @@
+! 将\键映射到右Ctrl
+add Control = less
+keycode 94 = Control_R NoSymbol Control_R
+remove Control = comma
+keycode 59 = comma less comma less

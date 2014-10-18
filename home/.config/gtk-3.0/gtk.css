@@ -1,0 +1,14 @@
+/*
+ * fix gnome-themes-standard 3.12.0 for Awesome WM
+ *
+ * It would create a transparent margin to show shadows and round corners.
+ * The code is in gtk-widgets.css
+ */
+.window-frame {
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+}
+.titlebar {
+  border-radius: 0;
+}

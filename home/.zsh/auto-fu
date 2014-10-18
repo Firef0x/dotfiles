@@ -1,0 +1,1225 @@
+#!zsh
+# NOTE: Generated from auto-fu.zsh (auto-fu-zcompile). Please DO NOT EDIT.
+
+afu-track-keymap () {
+	typeset -gA afu_keymap_state
+	local new="${KEYMAP}"
+	local old="${@[-2]}"
+	local fun="${@[-1]}"
+	{
+		afu-track-keymap-skip-p "$old" "$new"
+	} && return
+	local cur="${afu_keymap_state[cur]-}"
+	afu_keymap_state+=(old "${afu_keymap_state[cur]-}") 
+	afu_keymap_state+=(cur "$old $new") 
+	[[ "$new" = 'main' ]] && [[ -n "$cur" ]] && {
+		local -a tmp
+		tmp=("${(Q)=cur}") 
+		afu_keymap_state+=(cur "$old $tmp[1]") 
+		"$fun" "$tmp[1]"
+	}
+}
+afu-line-init () {
+	local auto_fu_init_p=1
+	local ps
+	{
+		local -A afu_rh_state
+		local afu_in_p=0
+		local afu_paused_p=0
+		zstyle -s ':auto-fu:var' postdisplay ps
+		[[ -z ${ps} ]] || POSTDISPLAY="$ps" 
+		afu-recursive-edit-and-accept
+	} always {
+		[[ -z ${ps} ]] || POSTDISPLAY='' 
+	}
+}
+afu-rh-clear-maybe () {
+	local ok _ck
+	afu-rh-highlight-state ok _ck afu-rh-highlight-state-update ""
+	"$ok"
+}
+afu-rebind-add () {
+	local name="$1"
+	local pre="$2"
+	local post="$3"
+	afu_rebinds_pre+=("$name" "$2") 
+	afu_rebinds_post+=("$name" "$3") 
+}
+afu-rh-highlight-maybe () {
+	local hi="$1"
+	local beg="$2"
+	local end="$3"
+	local hiv="$4"
+	local ok ck
+	afu-rh-highlight-state ok ck afu-rh-highlight-state-update "$hi $beg $end $hiv"
+	"$ok"
+	"$ck"
+}
+afu-autoable-skipword-p-default () {
+	afu-error-symif "$0" "$1" a tmp || return $?
+	local -a a
+	a=("'" "$'" "$histchars[1]") 
+	local -a tmp
+	tmp=("(${(j.|.)a})*") 
+	: ${(PA)1::=$tmp}
+}
+backward-delete-char-by-keymap () {
+	if (( $+widgets[$KEYMAP+backward-delete-char] == 1 ))
+	then
+		zle $KEYMAP+backward-delete-char "$@"
+	else
+		zle .backward-delete-char "$@"
+	fi
+}
+auto-fu-zle-keymap-select () {
+	afu-track-keymap "$@" afu-adjust-main-keymap
+}
+afu+accept-and-hold () {
+	__accepted=($WIDGET ${=NUMERIC:+-n $NUMERIC} "$@") 
+	zle .accept-and-hold && {
+		local hi
+		zstyle -s ':auto-fu:highlight' input hi
+		[[ -z ${hi} ]] || {
+			(($+functions[${hi}])) && "${hi}" || afu-rh-finish "0 ${#BUFFER} ${hi}"
+		}
+	}
+	zstyle -T ':auto-fu:var' postdisplay/clearp && POSTDISPLAY='' 
+	return 0
+}
+afu+accept-line () {
+	__accepted=($WIDGET ${=NUMERIC:+-n $NUMERIC} "$@") 
+	zle .accept-line && {
+		local hi
+		zstyle -s ':auto-fu:highlight' input hi
+		[[ -z ${hi} ]] || {
+			(($+functions[${hi}])) && "${hi}" || afu-rh-finish "0 ${#BUFFER} ${hi}"
+		}
+	}
+	zstyle -T ':auto-fu:var' postdisplay/clearp && POSTDISPLAY='' 
+	return 0
+}
+afu-autoable-skiplbuffer-p () {
+	local lbuffer="$3"
+	afu-autoable-skip-pred lbuffer autoable-function/skiplbuffers
+}
+afu-comppost () {
+	((compstate[list_lines] + BUFFERLINES + 2 > LINES)) && {
+		compstate[list]='' 
+		[[ $WIDGET = afu+complete-word ]] || compstate[insert]='' 
+		zle -M "$compstate[list_lines]($compstate[nmatches]) too many matches..."
+	}
+	typeset -g afu_one_match_p=
+	(( $compstate[nmatches] == 1 )) && afu_one_match_p=t 
+	afu_curcompleter=$_completer 
+}
+with-afu-zsh-syntax-highlighting () {
+	local -a rh_old
+	: ${(A)rh_old::=$region_highlight}
+	local b_old
+	b_old="${buffer_cur-}" 
+	local -i ret=0
+	local -i hip=0
+	((hip=$+functions[_zsh_highlight]))
+	((hip==0)) && {
+		"$1" t "$@[2,-1]"
+		ret=$? 
+	}
+	((hip!=0)) && {
+		"$1" nil "$@[2,-1]"
+		ret=$? 
+	}
+	if ((PENDING==0))
+	then
+		((hip==1)) && {
+			if ((afu_in_p==1))
+			then
+				[[ "$BUFFER" != "$buffer_cur" ]] && {
+					_ZSH_HIGHLIGHT_PRIOR_BUFFER="" 
+				}
+				((CURSOR != cursor_cur)) && {
+					_ZSH_HIGHLIGHT_PRIOR_CORSUR=-1 
+				}
+			fi
+			_zsh_highlight
+		}
+		((ret==-1)) || {
+			local _ok ck
+			afu-rh-highlight-state _ok ck
+			"$ck"
+		}
+	else
+		[[ ${#${buffer_cur-}} > $#b_old ]] && : ${(A)region_highlight::=$rh_old}
+	fi
+}
+afu+vi-ins-mode () {
+	zle -K afu
+}
+auto-fu () {
+	local keepbufferp="$1"
+	cursor_cur="$CURSOR" 
+	buffer_cur="$BUFFER" 
+	with-afu-region-highlight-saving with-afu-completer-vars zle complete-word
+	cursor_new="$CURSOR" 
+	buffer_new="$BUFFER" 
+	if [[ "$buffer_cur[1,cursor_cur]" = "$buffer_new[1,cursor_cur]" ]]
+	then
+		CURSOR="$cursor_cur" 
+		{
+			local hi hiv
+			[[ $afu_one_match_p = t ]] && hi=completion/one  || hi=completion 
+			zstyle -s ':auto-fu:highlight' "$hi" hiv
+			[[ -z ${hiv} ]] || {
+				local -i end=$cursor_new
+				[[ $BUFFER[$cursor_new] = ' ' ]] && (( end-- ))
+				afu-rh-highlight-maybe $hi $CURSOR $end $hiv
+			}
+		}
+		if [[ "$buffer_cur" != "$buffer_new" ]] || ((cursor_cur != cursor_new))
+		then
+			afu_in_p=1 
+			{
+				$keepbufferp
+			} || {
+				local -a region_highlight
+				region_highlight=() 
+				local BUFFER="$buffer_cur"
+				local CURSOR="$cursor_cur"
+				with-afu-completer-vars zle list-choices
+			}
+		fi
+	else
+		{
+			$keepbufferp
+		} || {
+			BUFFER="$buffer_cur" 
+			CURSOR="$cursor_cur" 
+			with-afu-completer-vars zle list-choices
+		}
+	fi
+}
+afu-rh-finish () {
+	local -a cur
+	: ${(A)cur::=${=afu_rh_state[cur]-}}
+	[[ -n "$cur" ]] && [[ "$cur[1]" = completion/* ]] && {
+		afu-rh-clear-maybe
+	}
+	region_highlight+="$1" 
+}
+auto-fu-init () {
+	with-afu-trapint with-afu-zle-rebinding afu-line-init
+}
+'with-afu~' () {
+	zle auto-fu-extend -- with-afu "$@"
+}
+_afu_approximate () {
+	local ret=
+	afu_approximate_correcting_p= 
+	_approximate
+	ret=$? 
+	if [[ -n "t" ]]
+	then
+		afu_approximate_correcting_p=$ret 
+	else
+		(( ret == 0 )) && afu_approximate_correcting_p=t 
+	fi
+	[[ -n "afu-completer-init-maybe" ]] && afu-completer-init-maybe $ret
+	return ret
+}
+afu-hmbk-selected-key-p () {
+	[[ $KEYS[-1] = ' ' ]] && {
+		local c="$LBUFFER[-1]"
+		[[ "$c" = ' ' ]] && [[ -z ${afu_one_match_p-} ]] && {
+			LBUFFER="$LBUFFER[1,-2]" 
+		}
+		return 0
+	}
+	[[ $KEYS[-1] = $'' ]] && return 0
+	[[ $KEYS[-1] = $'
+' ]] && return 0
+	[[ $KEYS[-1] = $'/' ]] && return 0
+	return 1
+}
+afu-resume-maybe () {
+	zstyle -t ':auto-fu:var' resume "$WIDGET" && auto-fu-activate
+}
+with-afu-trapint-handling () {
+	local number="$1"
+	shift
+	local name="$1"
+	shift
+	case "$WIDGET" in
+		(afu+complete-word) {
+				[[ "${LASTWIDGET-}" != afu+complete-word ]] && {
+					return $((128+$number))
+				}
+			} ;;
+		(history*) {
+				zle send-break
+				return 0
+			} ;;
+	esac
+	[[ -n ${afu_match_ret-} ]] && ((${afu_match_ret} == 0)) && {
+		afu_match_ret= 
+		zle send-break
+		return 0
+	}
+	"$@"
+	return $?
+}
+afu-install-eof () {
+	zstyle -t ':auto-fu:var' eof-installed-p || {
+		if [[ "$options[ignoreeof]" = "on" ]]
+		then
+			bindkey "^D" afu+orf-ignoreeof-deletechar-list
+		else
+			setopt ignoreeof
+			bindkey "^D" afu+orf-exit-deletechar-list
+		fi
+	} always {
+		zstyle ':auto-fu:var' eof-installed-p yes
+	}
+}
+afu+vi-cmd-mode () {
+	zle -K afu-vicmd
+}
+'auto-fu-on~' () {
+	afu-zle-force-install
+	auto-fu-on
+}
+auto-fu-preexec () {
+	echo -en '[0m'
+}
+afu-rh-highlight-state-sync-old () {
+	local -a old
+	: ${(A)old::=${=afu_rh_state[old]-}}
+	[[ -n ${old} ]] && [[ -n ${region_highlight} ]] && {
+		: ${(A)region_highlight::=${region_highlight:#"$old[2,-1]"}}
+	}
+}
+afu-completer-init-maybe () {
+	local -i ret="$1"
+	((!$ret)) && {
+		local b="$BUFFER"
+		if ((${(m)#b} + 4 > COLUMNS - 1))
+		then
+			: ${b::=%B...%b${(ml:$((COLUMNS - 4 - 3)):::::)b}}
+		fi
+		_message "%B{%b $b %B}%b"
+	}
+	return ret
+}
+afu+accept-line-and-down-history () {
+	__accepted=($WIDGET ${=NUMERIC:+-n $NUMERIC} "$@") 
+	zle .accept-line-and-down-history && {
+		local hi
+		zstyle -s ':auto-fu:highlight' input hi
+		[[ -z ${hi} ]] || {
+			(($+functions[${hi}])) && "${hi}" || afu-rh-finish "0 ${#BUFFER} ${hi}"
+		}
+	}
+	zstyle -T ':auto-fu:var' postdisplay/clearp && POSTDISPLAY='' 
+	return 0
+}
+afu-rhs-protect () {
+	local place="$1"
+	local savefun="$2"
+	local killfun="$3"
+	local rillfun="$4"
+	shift 4
+	local -a a
+	: ${(A)a::=$@}
+	if [[ -n "$RBUFFER" ]]
+	then
+		if ((CURSOR > $tmp[2])) || [[ $WIDGET = *complete* ]]
+		then
+			"$savefun" "$a[*]"
+		else
+			[[ -n "${(P)place-}" ]] && "$rillfun" $place "$a[*]"
+		fi
+	else
+		if (($a[2] > $#BUFFER + 1))
+		then
+			"$killfun" $place "$a[*]"
+			"$savefun" "$a[1] $#BUFFER $a[3]"
+		elif (($a[2] > $#BUFFER))
+		then
+			"$savefun" "$a[1] $#BUFFER $a[3]"
+		else
+			(($a[1] > $#BUFFER + 1)) || "$savefun" "$a[*]"
+		fi
+	fi
+}
+with-afu-completer-vars () {
+	setopt localoptions no_recexact
+	local LISTMAX=999999
+	with-afu-compfuncs "$@"
+}
+afu-rh-highlight-state-update () {
+	afu_rh_state+=(old "${afu_rh_state[cur]-}") 
+	afu_rh_state+=(cur "$1") 
+}
+afu-rh-highlight-state-sync-cur () {
+	local -a cur
+	: ${(A)cur::=${=afu_rh_state[cur]-}}
+	if [[ -n ${cur} ]] && {
+			[[ -n ${region_highlight} ]] && [[ -z ${(M)region_highlight:#"$cur[2,-1]"} ]]
+		} || [[ -z ${region_highlight} ]]
+	then
+		region_highlight+="$cur[2,-1]" 
+	fi
+}
+afu-install-tracking-completer () {
+	local funname="$1"
+	local varname="$2"
+	local nozerop="${3:-}"
+	local retfunc="${4:-}"
+	local completer=${funname#_afu}
+	eval "$(cat <<EOT
+    $funname () {
+      local ret=
+      $varname=
+
+      $completer
+      ret=\$?
+
+      if [[ -n "$nozerop" ]]; then
+        $varname=\$ret
+      else
+        (( ret == 0 )) && $varname=t
+      fi
+
+      [[ -n "$retfunc" ]] && $retfunc \$ret
+
+      return ret
+    }
+EOT
+  )"
+}
+kill-whole-line-by-keymap () {
+	if (( $+widgets[$KEYMAP+kill-whole-line] == 1 ))
+	then
+		zle $KEYMAP+kill-whole-line "$@"
+	else
+		zle .kill-whole-line "$@"
+	fi
+}
+afu+complete-word () {
+	afu-clearing-maybe "${1-}"
+	with-afu-completer-tracking t
+	{
+		afu-able-p
+	} || {
+		zle complete-word
+		return
+	}
+	local lastcompp=nil
+	() {
+		[[ $LASTWIDGET = *complete* ]] && lastcompp=t 
+	}
+	with-afu-completer-vars
+	if ((afu_in_p == 1))
+	then
+		afu_in_p=0 
+		CURSOR="$cursor_new" 
+		case $LBUFFER[-1] in
+			(=) {
+					local x="${${(@z)LBUFFER}[-1]}"
+					[[ "$x" = -* ]] && zle complete-word && return
+				} ;;
+			(/) {
+					local c=$LBUFFER[-1]
+					LBUFFER=$LBUFFER[1,-2] 
+					zle -U "$c"
+					return
+				} ;;
+			(,) BUFFER="$buffer_cur" 
+				zle complete-word
+				return ;;
+		esac
+		if [[ $lastcompp = t ]]
+		then
+			(( $_lastcomp[nmatches]  > 1 )) && [[ $LBUFFER[-1] != [[:space:]] ]] && zle complete-word
+			(( $_lastcomp[nmatches] == 1 )) || [[ $LBUFFER[-1] = [[:space:]] ]] && {
+				_lastcomp[nmatches]=0 
+				local -a old
+				: ${(A)old::=${=afu_rh_state[old]-}}
+				[[ -n ${old} ]] && [[ -n ${rh} ]] && {
+					: ${(A)rh::=${rh:#"$old[2,-1]"}}
+				}
+			}
+		fi
+	else
+		[[ $LASTWIDGET = afu+*~afu+complete-word ]] && {
+			afu_in_p=0 
+			BUFFER="$buffer_cur" 
+		}
+		[[ $LASTWIDGET = auto-fu-deactivate ]] && {
+			_lastcomp[nmatches]=0 
+			zle list-choices
+		}
+		(($+_lastcomp)) || {
+			[[ $lastcompp = t ]] && [[ -n $_lastcomp[nmatches] ]]
+		} || {
+			[[ $LBUFFER[-1] = [[:space:]] ]]
+		} && {
+			() {
+				[[ $_lastcomp = "" ]] && return
+				[[ $_lastcomp[completer] = complete ]] || return
+				[[ -n "$_lastcomp[unambiguous]" ]] || return
+				[[ $_lastcomp[prefix] != $_lastcomp[unambiguous] ]] || return
+				(($_lastcomp[nmatches]==1)) && return
+				afu_magic_insert_p=t 
+				zle complete-word
+			}
+			zle complete-word
+			return $?
+		}
+		(( $_lastcomp[nmatches] == 0 )) && {
+			return 0
+		}
+		(( $_lastcomp[nmatches]  > 1 )) && [[ $LBUFFER[-1] != [[:space:]] ]] && {
+			zle complete-word
+			return $?
+		}
+		(( $_lastcomp[nmatches] == 1 )) || [[ $LBUFFER[-1] = [[:space:]] ]] && {
+			local c=$LBUFFER[-1]
+			[[ $c = ' ' ]] && {
+				return 0
+			}
+			[[ $c = "/" ]] && {
+				LBUFFER=$LBUFFER[1,-2] 
+				zle -U "$c"
+				return 0
+			}
+			[[ $c != "/" ]] && {
+				zle complete-word
+				return $?
+			}
+			return 0
+		}
+	fi
+}
+afu-trap-send-break () {
+	return $((128 + $1))
+}
+afu-able-p () {
+	local pred=
+	zstyle -s ':auto-fu:var' autoablep-function pred
+	"${pred:-auto-fu-default-autoable-pred}"
+	return $?
+}
+afu-clean () {
+	local d=${1:-~/.zsh}
+	rm -f ${d}/{auto-fu,auto-fu.zwc*(N)}
+}
+afu+orf-exit-deletechar-list () {
+	afu-eof-maybe exit zle delete-char-or-list
+}
+afu-reset () {
+	region_highlight=() 
+	afu_in_p=0 
+	local ps
+	zstyle -s ':auto-fu:var' postdisplay ps
+	[[ -z ${ps} ]] || POSTDISPLAY='' 
+}
+backward-kill-word-by-keymap () {
+	if (( $+widgets[$KEYMAP+backward-kill-word] == 1 ))
+	then
+		zle $KEYMAP+backward-kill-word "$@"
+	else
+		zle .backward-kill-word "$@"
+	fi
+}
+yank-by-keymap () {
+	if (( $+widgets[$KEYMAP+yank] == 1 ))
+	then
+		zle $KEYMAP+yank "$@"
+	else
+		zle .yank "$@"
+	fi
+}
+auto-fu-activate () {
+	afu_paused_p=0 
+}
+with-afu-compfuncs () {
+	compprefuncs=(afu-comppre) 
+	comppostfuncs=(afu-comppost) 
+	"$@"
+}
+afu-recursive-edit-and-accept () {
+	local -a __accepted
+	zle recursive-edit -K afu || {
+		afu-reset
+		zle -R ''
+		zle send-break
+		return
+	}
+	[[ -n ${__accepted} ]] && (( ${#${(M)afu_accept_lines:#${__accepted[1]}}} > 1 )) && {
+		zle "${__accepted[@]}"
+	} || {
+		zle accept-line
+	}
+}
+afu-autoable-skip-pred () {
+	local place="$1"
+	local style="$2"
+	local deffn="${3-}"
+	local value="${(P)place}"
+	local -a skips
+	skips=() 
+	zstyle -a ':auto-fu:var' "$style" skips
+	(($#skips==0)) && [[ -n "$deffn" ]] && {
+		"$deffn" skips
+	}
+	local skip
+	for skip in $skips
+	do
+		[[ "${value}" = ${~skip} ]] && {
+			[[ -n "${AUTO_FU_DEBUG-}" ]] && {
+				echo "***BREAK*** ${skip}" >> ${AUTO_FU_DEBUG-}
+			}
+			return 1
+		}
+	done
+	return 0
+}
+with-afu-resume () {
+	afu-resume-maybe
+	with-afu-zsh-syntax-highlighting "$@"
+}
+with-afu-menuselecting-handling () {
+	local fn="$1"
+	local inserts="*(approximate|match|ignored)"
+	[[ "${afu_curcompleter-}" = ${~inserts} ]] && [[ $WIDGET = (magic-space|accept-line*) ]] && {
+		with-afu-completer-vars zle list-choices
+		return
+	}
+	local force_menuselect_off_p=
+	(( $+functions[afu-handle-menuselecting-buffer-keep-p] )) && [[ -z ${AUTO_FU_NOFUNCMEMO-} ]] || afu-handle-menuselecting-buffer-keep-p () {
+		[[ "${afu_curcompleter-}" = ${~inserts} ]] && {
+			[[ -n ${afu_approximate_correcting_p-} ]] && {
+				{
+					afu-hmbk-selected-key-p
+				} && {
+					force_menuselect_off_p=t 
+					return 0
+				}
+				[[ $KEYS[-1] = [[:]] ]] && {
+					[[ $LBUFFER[-1] = ' ' ]] && {
+						LBUFFER=$LBUFFER[1,-2] 
+					}
+					[[ $LBUFFER[-1] = $KEYS[-1] ]] && {
+						LBUFFER=$LBUFFER[1,-2] 
+					}
+					return 0
+				}
+			}
+			[[ -n ${afu_match_ret-} ]] && ((${afu_match_ret} == 0)) && {
+				((${_lastcomp[nmatches]} == 1)) && return 0
+				afu_match_rec_p=t 
+				{
+					afu-hmbk-selected-key-p
+				} && return 0 || return 1
+			}
+			{
+				afu-hmbk-selected-key-p
+			} || {
+				[[ $LBUFFER[-1] = $KEYS[-1] ]] && [[ $LBUFFER[-1] = '/' ]] && {
+					
+				} && {
+					LBUFFER=$LBUFFER[1,-2] 
+					force_menuselect_off_p=t 
+				}
+			}
+		}
+	}
+	$fn afu-handle-menuselecting-buffer-keep-p
+	[[ "${afu_curcompleter-}" = ignored ]] && return
+	[[ -n ${last_afuapproximatecorrecting_p-} ]] && return
+	[[ -z ${last_afucompleteword_p-} ]] && [[ -z ${force_menuselect_off_p} ]] && [[ -z ${afu_one_match_p-} ]] && {
+		[[ -n ${afu_match_ret-} ]] && ((${afu_match_ret} == 0))
+	} && {
+		with-afu-completer-vars zle complete-word
+	}
+}
+self-insert-by-keymap () {
+	if (( $+widgets[$KEYMAP+self-insert] == 1 ))
+	then
+		zle $KEYMAP+self-insert "$@"
+	else
+		zle .self-insert "$@"
+	fi
+}
+afu+kill-line () {
+	with-afu~ .kill-line self-insert backward-delete-char backward-kill-word kill-line kill-whole-line kill-word magic-space yank
+}
+afu+yank () {
+	with-afu~ .yank self-insert backward-delete-char backward-kill-word kill-line kill-whole-line kill-word magic-space yank
+}
+afu-adjust-main-keymap () {
+	[[ "$KEYMAP" = 'main' ]] && {
+		zle -K "$1"
+	}
+}
+with-afu-zle-rebinding () {
+	local -a restores
+	{
+		eval "$(afu-rebind-expand restores self-insert; afu-rebind-expand restores backward-delete-char; afu-rebind-expand restores backward-kill-word; afu-rebind-expand restores kill-line; afu-rebind-expand restores kill-whole-line; afu-rebind-expand restores kill-word; afu-rebind-expand restores magic-space; afu-rebind-expand restores yank; afu-rebind-expand restores complete-word; afu-rebind-expand restores list-choices;)"
+		afu-zle-force-install () {
+			zle -N self-insert self-insert-by-keymap
+			zle -N backward-delete-char backward-delete-char-by-keymap
+			zle -N backward-kill-word backward-kill-word-by-keymap
+			zle -N kill-line kill-line-by-keymap
+			zle -N kill-whole-line kill-whole-line-by-keymap
+			zle -N kill-word kill-word-by-keymap
+			zle -N magic-space magic-space-by-keymap
+			zle -N yank yank-by-keymap
+			zle -C complete-word .complete-word _main_complete
+			zle -C list-choices .list-choices _main_complete
+		}
+		afu-zle-force-install
+		{
+			"$@"
+		}
+	} always {
+		eval "function afu-zle-rebind-restore () { ${(j.;.)restores} }"
+		afu-zle-rebind-restore
+		$0 () {
+			{
+				afu-zle-force-install
+				{
+					"$@"
+				}
+			} always {
+				afu-zle-rebind-restore
+			}
+		}
+	}
+}
+afu+kill-word () {
+	with-afu~ .kill-word self-insert backward-delete-char backward-kill-word kill-line kill-whole-line kill-word magic-space yank
+}
+auto-fu-toggle () {
+	(( afu_paused_p == 1 )) && {
+		afu_paused_p=0 
+		return
+	}
+	(( afu_paused_p != 1 )) && {
+		afu_paused_p=1 
+		return
+	}
+}
+with-afu-region-highlight-saving () {
+	local -a rh
+	: ${(A)rh::=$region_highlight}
+	region_highlight=() 
+	{
+		local h
+		local -a tmp rhtmp
+		: ${(A)rhtmp::=$rh}
+		for h in $rhtmp
+		do
+			: ${(A)tmp::=${=h}}
+			if ((PENDING==0))
+			then
+				if (($#afu_rhs_no_kills != 0)) && [[ -z ${(M)afu_rhs_no_kills:#$WIDGET} ]]
+				then
+					afu-rhs-protect rh afu-rhs-save afu-rhs-kill afu-rhs-kill "$tmp[@]"
+				else
+					afu-rhs-protect rh afu-rhs-save : : "$tmp[@]"
+				fi
+			else
+				afu-rhs-protect rh : afu-rhs-kill afu-rhs-kill "$tmp[@]"
+			fi
+		done
+		"$@"
+	} always {
+		: ${(A)region_highlight::=$rh}
+	}
+}
+kill-word-by-keymap () {
+	if (( $+widgets[$KEYMAP+kill-word] == 1 ))
+	then
+		zle $KEYMAP+kill-word "$@"
+	else
+		zle .kill-word "$@"
+	fi
+}
+afu+backward-delete-char () {
+	with-afu~ .backward-delete-char self-insert backward-delete-char backward-kill-word kill-line kill-whole-line kill-word magic-space yank
+}
+afu-autoable-skipword-p () {
+	local word="$1"
+	afu-autoable-skip-pred word autoable-function/skipwords afu-autoable-skipword-p-default
+}
+afu-track-keymap-skip-p () {
+	local old="$1"
+	local new="$2"
+	{
+		[[ -z "$old" ]] || [[ -z "$new" ]]
+	} && return 0
+	local -a ms
+	ms=() 
+	zstyle -a ':auto-fu:var' track-keymap-skip ms
+	(( ${#ms} )) || return -1
+	local m
+	for m in $ms
+	do
+		[[ "$old" = "$m" ]] && return 0
+		[[ "$new" = "$m" ]] && return 0
+	done
+	return -1
+}
+auto-fu-default-autoable-pred () {
+	local -a ps
+	zstyle -a ':auto-fu:var' autoable-function/preds ps
+	(( $#ps )) || {
+		afu-autoable-default-functions ps
+	}
+	local -a reply
+	local -i REPLY REPLY2
+	local -a areply
+	afu-split-shell-arguments
+	local word="${reply[REPLY]-}"
+	local commandish="${areply[1]-}"
+	local p
+	for p in $ps
+	do
+		local ret=0
+		"$p" "$word" "$commandish" "${(j..)areply[1,((REPLY-1))]}" "${(j..)areply[1,-1]}"
+		ret=$? 
+		((ret == 1)) && return 1
+		((ret ==-1)) && return 0
+	done
+	return 0
+}
+with-afu-gvars () {
+	(( auto_fu_init_p == 1 )) && {
+		zle -M "Sorry, can't turn on or off if auto-fu-init is in effect."
+		return
+	}
+	typeset -g afu_in_p=0
+	typeset -g afu_paused_p=0
+	typeset -gA afu_rh_state
+	"$@"
+}
+with-afu () {
+	local clearp="$1"
+	shift
+	local zlefun="$1"
+	shift
+	local -a zs
+	: ${(A)zs::=$@}
+	with-afu-completer-tracking
+	afu-clearing-maybe "$clearp"
+	((afu_in_p == 1)) && {
+		afu_in_p=0 
+		BUFFER="$buffer_cur" 
+	}
+	with-afu-region-highlight-saving zle $zlefun && {
+		setopt localoptions extendedglob no_banghist
+		local es ds
+		zstyle -a ':auto-fu:var' enable es
+		(( ${#es} == 0 )) && es=(all) 
+		if [[ -n ${(M)es:#(#i)all} ]]
+		then
+			zstyle -a ':auto-fu:var' disable ds
+			: ${(A)es::=${zs:#(${~${(j.|.)ds}})}}
+		fi
+		[[ -n ${(M)es:#${zlefun#.}} ]]
+	} && {
+		auto-fu-maybe
+	}
+}
+_afu_match () {
+	local ret=
+	afu_match_ret= 
+	_match
+	ret=$? 
+	if [[ -n "t" ]]
+	then
+		afu_match_ret=$ret 
+	else
+		(( ret == 0 )) && afu_match_ret=t 
+	fi
+	[[ -n "afu-completer-init-maybe" ]] && afu-completer-init-maybe $ret
+	return ret
+}
+'afu+complete-word~' () {
+	with-afu-region-highlight-saving afu+complete-word "$@"
+}
+afu-error-symif () {
+	local fname="$1"
+	shift
+	local place="$1"
+	shift
+	[[ "$place" = (${~${(j.|.)@}}) ]] && {
+		echo "*** error in $fname; ${(qq)@} cannot be used in this context. sorry."
+		return -1
+	}
+	return 0
+}
+auto-fu-off () {
+	with-afu-gvars zle -K emacs
+}
+afu-clearing-maybe () {
+	local clearregionp="$1"
+	[[ $clearregionp = t ]] && region_highlight=() 
+	afu-rh-clear-maybe
+	if ((afu_in_p == 1))
+	then
+		[[ "$BUFFER" != "$buffer_new" ]] || ((CURSOR != cursor_cur)) && {
+			afu_in_p=0 
+		}
+	fi
+}
+afu-rebind-expand () {
+	local place="$1"
+	local w="$2"
+	local x="$widgets[$w]"
+	[[ -n ${afu_zle_contribs} && -n ${(Mk)afu_zle_contribs:#$w} ]] && return
+	[[ -z ${afu_rebinds_post[$w]-} ]] || {
+		echo " $place+=\"${afu_rebinds_post[$w]}\""
+		return
+	}
+	[[ $x = user:*-by-keymap ]] && return
+	[[ $x = (user|completion):* ]] || return
+	local f="${x#*:}"
+	[[ $x = completion:* ]] && echo " $place+=\"zle -C $w ${f/:/ }\" "
+	[[ $x != completion:* ]] && echo " $place+=\"zle -N $w $f\" "
+}
+auto-fu-on () {
+	with-afu-gvars zle -K afu
+}
+auto-fu-maybe () {
+	local ret=-1
+	(($PENDING== 0)) && {
+		afu-able-p
+	} && [[ $LBUFFER != *$'
+'* ]] && {
+		with-afu-menuselecting-handling auto-fu
+		ret=0 
+	}
+	return ret
+}
+afu-autoable-skipline-p () {
+	local line="$4"
+	afu-autoable-skip-pred line autoable-function/skiplines
+}
+afu-rhs-kill () {
+	: ${(PA)1::=${(PA)1:#$2}}
+}
+afu-install () {
+	zstyle -t ':auto-fu:var' misc-installed-p || {
+		zmodload zsh/parameter 2> /dev/null || {
+			echo 'auto-fu:zmodload error. exiting.' >&2
+			exit -1
+		}
+		afu-install-isearchmap
+		afu-install-eof
+		afu-install-preexec
+	} always {
+		zstyle ':auto-fu:var' misc-installed-p yes
+	}
+	bindkey -N afu emacs
+	{
+		"$@"
+	}
+	bindkey -M afu "^I" afu+complete-word
+	bindkey -M afu "^M" afu+accept-line
+	bindkey -M afu "^J" afu+accept-line
+	bindkey -M afu "^O" afu+accept-line-and-down-history
+	bindkey -M afu "^[a" afu+accept-and-hold
+	bindkey -M afu "^X^[" afu+vi-cmd-mode
+	bindkey -N afu-vicmd vicmd
+}
+afu+magic-space () {
+	with-afu~ .magic-space self-insert backward-delete-char backward-kill-word kill-line kill-whole-line kill-word magic-space yank
+}
+afu-autoable-paused-p () {
+	(( afu_paused_p == 0 ))
+}
+afu-rhs-save () {
+	region_highlight+="$@" 
+}
+afu-ignore-eof () {
+	zle -M "zsh: use 'exit' to exit."
+}
+with-afu-trapint () {
+	setopt localtraps
+	TRAPINT () {
+		local signum="$1"
+		shift
+		with-afu-trapint-handling "$signum" intr afu-trap-ignore-int "$@"
+		return $?
+	}
+	"$@"
+}
+auto-fu-install () {
+	typeset -ga afu_accept_lines
+	afu_accept_lines=(afu+accept-line afu+accept-line-and-down-history afu+accept-and-hold) 
+	typeset -gA afu_zle_contribs
+	afu_zle_contribs=() 
+	typeset -ga afu_rhs_no_kills
+	afu_rhs_no_kills=() 
+	typeset -gA afu_rebinds_pre
+	afu_rebinds_pre=() 
+	typeset -gA afu_rebinds_post
+	afu_rebinds_post=() 
+	{
+		zle -N afu+accept-and-hold
+		zle -N afu+accept-line
+		zle -N afu+accept-line-and-down-history
+		zle -N afu+backward-delete-char
+		zle -N afu+backward-kill-word
+		zle -N afu+complete-word 'afu+complete-word~~'
+		zle -N afu+kill-line
+		zle -N afu+kill-whole-line
+		zle -N afu+kill-word
+		zle -N afu+magic-space
+		zle -N afu+orf-exit-deletechar-list
+		zle -N afu+orf-ignoreeof-deletechar-list
+		zle -N afu+self-insert
+		zle -N afu+vi-cmd-mode
+		zle -N afu+vi-ins-mode
+		zle -N afu+yank
+		zle -N auto-fu
+		zle -N auto-fu-activate
+		zle -N auto-fu-deactivate
+		zle -N auto-fu-extend 'with-afu-magic-insert~'
+		zle -N auto-fu-init
+		zle -N auto-fu-magic-space
+		zle -N auto-fu-off 'auto-fu-off~'
+		zle -N auto-fu-on 'auto-fu-on~'
+		zle -N auto-fu-toggle
+		zle -N afu+self-insert
+		zle -N afu+backward-delete-char
+		zle -N afu+backward-kill-word
+		zle -N afu+kill-line
+		zle -N afu+kill-whole-line
+		zle -N afu+kill-word
+		zle -N afu+magic-space
+		zle -N afu+yank
+	}
+	afu-install
+}
+with-afu-magic-insert () {
+	typeset -g afu_magic_insert_p
+	local -i ret
+	{
+		if [[ $WIDGET = self-insert ]] && [[ $LASTWIDGET = afu+complete-word ]] && [[ $afu_magic_insert_p = t ]] && [[ ${LBUFFER% } = *$KEYS ]]
+		then
+			LBUFFER=${${LBUFFER% }%$KEYS} 
+		fi
+		"$@"
+		((ret=$?))
+	} always {
+		[[ $WIDGET = afu+complete-word ]] || afu_magic_insert_p=nil 
+	}
+	return $ret
+}
+'auto-fu-off~' () {
+	afu-zle-force-install
+	auto-fu-off
+}
+afu+backward-kill-word () {
+	with-afu~ .backward-kill-word self-insert backward-delete-char backward-kill-word kill-line kill-whole-line kill-word magic-space yank
+}
+auto-fu-magic-space () {
+	if {
+			afu-autoable-paused-p || false
+		} && [[ -n "${_lastcomp[prefix]-}" ]] && [[ -n "${_lastcomp[unambiguous]-}" ]] && [[ "${_lastcomp[insert_positions]-}" != *:* ]] && [[ "${_lastcomp[prefix]-}" = "${_lastcomp[unambiguous]}" ]] && ((CURSOR == $_lastcomp[insert_positions])) && [[ "$LBUFFER" = *"${_lastcomp[prefix]-}" ]] && [[ "$LBUFFER" = *[^[:space:]=]/ ]]
+	then
+		LBUFFER="$LBUFFER[1,-2]" 
+	fi
+	zle .magic-space
+}
+auto-fu-deactivate () {
+	afu_paused_p=1 
+}
+afu-trap-ignore-int () {
+	typeset -gi afu_trap_count
+	if [[ "${LASTWIDGET-}" = "auto-fu-deactivate" ]]
+	then
+		((afu_trap_count++))
+	else
+		afu_trap_count=0 
+	fi
+	((afu_trap_count > 0)) && {
+		afu_trap_count=0 
+		zle .send-break
+		return $((128 + $1))
+	}
+	zle auto-fu-deactivate
+}
+afu-autoable-dots-p () {
+	[[ "${1##*/}" != ("."|"..") ]]
+}
+afu-install-isearchmap () {
+	zstyle -t ':auto-fu:var' isearchmap-installed-p || {
+		[[ -n ${(M)keymaps:#isearch} ]] && bindkey -M isearch "^M" afu+accept-line
+	} always {
+		zstyle ':auto-fu:var' isearchmap-installed-p yes
+	}
+}
+afu-autoable-space-p () {
+	local c=$LBUFFER[-1]
+	[[ $c = '' ]] && return 1
+	[[ $c = ' ' ]] && {
+		afu-able-space-p || return 1
+	}
+	return 0
+}
+kill-line-by-keymap () {
+	if (( $+widgets[$KEYMAP+kill-line] == 1 ))
+	then
+		zle $KEYMAP+kill-line "$@"
+	else
+		zle .kill-line "$@"
+	fi
+}
+afu-split-shell-arguments () {
+	autoload -U split-shell-arguments
+	split-shell-arguments
+	((REPLY & 1)) && ((REPLY--))
+	((REPLY2 = ${#reply[REPLY]-} + 1))
+	local -i p
+	local -a tmp
+	: ${(A)tmp::=$reply[1,REPLY]}
+	p=${tmp[(I)(\||\|\||;|&|&&)]} 
+	((p)) && ((p+=2)) || ((p=1))
+	while [[ ${tmp[p]-} = (noglob|nocorrect|builtin|command) ]]
+	do
+		((p+=2))
+	done
+	((p!=1)) && ((p++))
+	: ${(A)tmp::=$reply[p,-1]}
+	p=${tmp[(I)(\||\|\||;|&|&&)]} 
+	((p)) && ((p-=2)) || ((p=-1))
+	: ${(A)areply::=${tmp[1,p]}}
+}
+'afu-install~' () {
+	afu-install afu-install-forall afu-initialize-zle-afu "$@" afu-initialize-zle-contrib afu-keymap+widget afu-initialize-rebinds
+	() {
+		[[ -z ${AUTO_FU_NOCP-} ]] || return
+		zstyle ':auto-fu:highlight' input bold
+		zstyle ':auto-fu:highlight' completion fg=black,bold
+		zstyle ':auto-fu:highlight' completion/one fg=whilte,bold,underline
+		zstyle ':auto-fu:var' postdisplay $'
+-azfu-'
+	}
+}
+afu+orf-ignoreeof-deletechar-list () {
+	afu-eof-maybe afu-ignore-eof zle delete-char-or-list
+}
+afu+self-insert () {
+	with-afu~ .self-insert self-insert backward-delete-char backward-kill-word kill-line kill-whole-line kill-word magic-space yank
+}
+afu-able-space-p () {
+	[[ -z ${AUTO_FU_NOCP-} ]] && {
+		[[ "$WIDGET" = "magic-space" ]] || return 1
+	}
+	local -a x
+	: ${(A)x::=${(z)LBUFFER}}
+	[[ $x[1] != man ]]
+}
+'with-afu-magic-insert~' () {
+	with-afu-magic-insert with-afu-resume "$@"
+}
+afu+kill-whole-line () {
+	with-afu~ .kill-whole-line self-insert backward-delete-char backward-kill-word kill-line kill-whole-line kill-word magic-space yank
+}
+'afu+complete-word~~' () {
+	zle auto-fu-extend -- afu+complete-word~
+}
+magic-space-by-keymap () {
+	if (( $+widgets[$KEYMAP+magic-space] == 1 ))
+	then
+		zle $KEYMAP+magic-space "$@"
+	else
+		zle .magic-space "$@"
+	fi
+}
+afu-rh-highlight-state () {
+	local oplace="$1" cplace="$2"
+	shift 2
+	: ${(P)oplace::=afu-rh-highlight-state-sync-old}
+	: ${(P)cplace::=afu-rh-highlight-state-sync-cur}
+	{
+		"$@"
+	}
+}
+auto-fu-extend () {
+	"$@"
+}
+afu-install-preexec () {
+	zstyle -t ':auto-fu:var' preexec-installed-p || {
+		autoload -Uz add-zsh-hook
+		add-zsh-hook preexec auto-fu-preexec
+	} always {
+		zstyle ':auto-fu:var' preexec-installed-p yes
+	}
+}
+afu-install-forall () {
+	local a
+	for a in "$@"
+	do
+		"$a"
+	done
+}
+with-afu-completer-tracking () {
+	local afucompletewordp="${1-}"
+	last_afucompleteword_p= 
+	if [[ -n ${afu_complete_word-} ]]
+	then
+		last_afucompleteword_p=t 
+		afu_complete_word= 
+	fi
+	afu_complete_word="${afucompletewordp}" 
+	last_afuapproximatecorrecting_p= 
+	if [[ -n ${afu_approximate_correcting_p-} ]]
+	then
+		last_afuapproximatecorrecting_p=t 
+		afu_approximate_correcting_p= 
+	fi
+	afu_curcompleter= 
+	afu_approximate_correcting_p= 
+	afu_match_ret= 
+	afu_match_rec_p= 
+}
+afu-autoable-default-functions () {
+	local place="$1"
+	afu-error-symif "$0" "$place" defaults || return $?
+	local -a defaults
+	defaults=(afu-autoable-paused-p afu-autoable-space-p afu-autoable-skipword-p afu-autoable-dots-p afu-autoable-skiplbuffer-p afu-autoable-skipline-p) 
+	: ${(PA)place::=$defaults}
+}
+afu-eof-maybe () {
+	local eof="$1"
+	shift
+	[[ -z $BUFFER ]] && {
+		$eof
+		return
+	}
+	"$@"
+}
+afu-comppre () {
+	[[ $LASTWIDGET = afu+*~afu+complete-word ]] && {
+		compstate[old_list]= 
+		compstate[insert]=automenu-unambiguous 
+	}
+	[[ $LASTWIDGET = afu+complete-word ]] && (($_lastcomp[nmatches]==1)) && {
+		compstate[old_list]= 
+	}
+	{
+		local -a match mbegin mend
+		local c='_(match|approximate)'
+		: ${(A)_completers::=${_completers/(#b)(#s)(${~c})(#e)/_afu${match[1]}}}
+	}
+	[[ -n ${(M)_completers:#(_afu)#_match} ]] && {
+		local tmp="${${:-$PREFIX$SUFFIX}#[~=]}"
+		[[ "$tmp:q" = "$tmp" ]] && return
+		: ${(A)_completers::=${_completers:#(_afu)#_approximate}}
+		[[ "${afu_match_rec_p}" = t ]] && _completers=() 
+	}
+}

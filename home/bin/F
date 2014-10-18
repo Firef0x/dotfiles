@@ -1,0 +1,3 @@
+#!/bin/bash
+sack__vim_shortcut=$(sed -n "$1p" < /home/f/.sack_shortcuts)
+gvim --remote-silent +$sack__vim_shortcut

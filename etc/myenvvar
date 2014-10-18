@@ -1,0 +1,29 @@
+# /etc/myenvvar : My Own Environment Variables
+# Customize Environment Variable {{{1
+# JAVA HOME path fonts setting etc. {{{2
+export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=gasp'
+export JAVA_FONTS=/usr/share/fonts/TTF
+export JAVA_HOME=/opt/java
+# }}}
+
+# Set our default path {{{2
+export PATH="/home/f/bin:/usr/local/sbin:/usr/local/bin:${JAVA_HOME}/bin:$PATH"
+export CLASSPATH=".:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib/tools.jar"
+# For python-powerline-git
+# export PYTHONPATH="/usr/lib/python3.4/site-packages"
+# }}}
+
+# Force set default editor avoiding sudoers etc invokes /usr/bin/vi {{{2
+#export EDITOR=nano
+export EDITOR=vim
+export LESS="-RM"
+# }}}
+
+# [Disabled]CCache Directory {{{2
+# export CCACHE_DIR="/var/cache/ccache"
+# export CCACHE_UMASK=002
+# export CCACHE_LOGFILE="/var/cache/ccache/ccache.log"
+# }}}
+# }}}
+
+# vim:ft=sh:fdm=marker:ai:et:sw=2:

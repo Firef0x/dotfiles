@@ -1,0 +1,71 @@
+#!/usr/bin/env python3
+
+import re
+
+import xdg.IconTheme
+from xdg.Menu import parse, Menu, MenuEntry
+
+from xdgutils import prepExec
+
+class inTerminal:
+  def __init__(self, cmd):
+    self.cmd = cmd
+
+  def __repr__(self):
+    return '(terminal or "xterm") .. " -e %s"' % repr(self.cmd).replace('"', r'\"')
+
+def getIconPath(name):
+  # FIXME: use a user-preferred theme?
+  return xdg.IconTheme.getIconPath(name, size=16, theme='gnome')
+
+def parseMenu(menu, data, indent=0):
+  for submenu in menu.Entries:
+    if isinstance(submenu, Menu):
+      if not submenu.Entries or not submenu.Directory:
+        continue
+      d = []
+      data.append((submenu.getName(), d, submenu.Directory.DesktopEntry.filename))
+      parseMenu(submenu, d, indent+1)
+    elif isinstance(submenu, MenuEntry):
+      entry = submenu.DesktopEntry
+      icon = getIconPath(entry.getIcon())
+      name = entry.getName()
+      exe = prepExec(entry)
+      if entry.get('Terminal').lower() in ('1', 'true'):
+        exe = inTerminal(exe)
+      data.append((name, exe, icon, entry.filename))
+
+def outputAwesome(d):
+  print('xdgmenu = function(terminal)\n  return ', end='')
+  content = printLuaList(d, indent=1)
+  content = re.sub(r'}, \n\s*{', '}, {', content).replace('}, \n', '}\n')
+  print(content, end='')
+  print('end')
+
+def printLuaList(v, indent=0):
+  ret = []
+  if isinstance(v, list):
+    ret.append('{\n')
+    for i in v:
+      ret.append(printLuaList(i, indent+1))
+    ret.append('  ' * indent + '}\n')
+  elif isinstance(v, tuple):
+    if len(v) == 3:
+      ret.append('  ' * indent + '{%r, --[[%s]] ' % (v[0], v[2]))
+      ret.append(printLuaList(v[1], indent+1))
+      ret.append('  ' * indent + '}, \n')
+    elif len(v) == 4:
+      cmd = repr(v[1]).replace(r'\\', '\\')
+      if v[2]:
+        ret.append('  ' * indent + '{%r, %s, %r --[[%s]]},\n' % (v[0], cmd, v[2], v[3]))
+      else:
+        ret.append('  ' * indent + '{%r, %s --[[%s]]},\n' % (v[0], cmd, v[3]))
+  return ''.join(ret)
+
+if __name__ == '__main__':
+  # Package archlinux-xdg-menu is required.
+  # To get default menus beside arch-*:
+  # ln -s applications-merged arch-applications-merged
+  d = []
+  parseMenu(parse('/etc/xdg/menus/arch-applications.menu'), d)
+  outputAwesome(d)

@@ -1,0 +1,46 @@
+#!/usr/bin/bash -e
+usage () {
+    cat <<EOF
+Usage: $0 <Command> <Path to repo> <Packages> ...
+Command:
+  a               Add packages to repo
+  d               Remove packages from repo
+  h, -h, --help   Print this message and exit
+EOF
+}
+
+if [ $# -ge 3 ]; then
+	_command=$1
+	shift
+	case "${_command}" in
+		h | -h | --help)
+		usage
+		exit 0 ;;
+		a)
+		_reponame=$1
+		shift
+		repo-add ${_reponame}.db.tar.gz $*
+		repo-add -f ${_reponame}.files.tar.gz $*
+		rm ${_reponame}.db.tar.gz.old ${_reponame}.files.tar.gz.old ${_reponame}.db ${_reponame}.files
+		cp ${_reponame}.db.tar.gz ${_reponame}.db
+		cp ${_reponame}.files.tar.gz ${_reponame}.files
+		;;
+		r)
+		_reponame=$1
+		shift
+		repo-remove ${_reponame}.db.tar.gz $*
+		repo-remove -f ${_reponame}.files.tar.gz $*
+		rm ${_reponame}.db.tar.gz.old ${_reponame}.files.tar.gz.old ${_reponame}.db ${_reponame}.files
+		cp ${_reponame}.db.tar.gz ${_reponame}.db
+		cp ${_reponame}.files.tar.gz ${_reponame}.files
+		;;
+		*)
+		echo "Unrecognized command \`${_command}'" 1>&2
+		usage
+		exit 1
+		;;
+	esac
+else
+	usage
+	exit 1
+fi

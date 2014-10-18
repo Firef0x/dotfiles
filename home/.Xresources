@@ -1,0 +1,68 @@
+! shell settings
+XTerm*utf8: 2
+XTerm*locale: true
+XTerm*loginShell: true
+XTerm*termName: xterm-256color
+! interface tweaks
+XTerm*scrollBar: false
+XTerm*metaSendsEscape: true
+XTerm*fastScroll: true
+! keep n lines of scrollback
+XTerm*saveLines: 20000
+! font face and default size (ctrl-0)
+XTerm*faceSize: 10
+XTerm*faceName: Inconsolata for Powerline
+! font size increments (ctrl-minus, ctrl-equal)
+XTerm*faceSize1: 2
+XTerm*faceSize2: 4
+XTerm*faceSize3: 6
+XTerm*faceSize4: 16
+XTerm*faceSize5: 22
+XTerm*faceSize6: 30
+! font rendering tweaks
+Xft.antialias: true
+Xft.autohint: false
+Xft.hinting: true
+Xft.hintstyle: hintfull
+Xft.lcdfilter: lcddefault
+Xft.rgba: rgb
+! clipboard integration
+XTerm*cutNewline: false
+XTerm*trimSelection: true
+XTerm*selectToClipboard: true
+XTerm*highlightSelection: true
+XTerm*disallowedWindowOps: 20,21,SetXprop
+! select paths and urls on triple click
+XTerm*on3Clicks: regex ([[:alpha:]]+://)?([[:alnum:]!#+,./=?@_~-]|(%[[:xdigit:]][[:xdigit:]]))+
+XTerm.VT100.printAttributes: 0
+XTerm.VT100.printerCommand: cat - >~/`date +%Y-%m-%d-%H%M%S`.txt
+XTerm.VT100.Translations: #override \
+Ctrl Shift <Key> P: print-everything() \n\
+Ctrl Shift <Key> N: spawn-new-terminal() \n\
+Ctrl <Key> 0: set-vt-font(d) \n\
+Ctrl <Key> minus: smaller-vt-font() \n\
+Ctrl <Key> equal: larger-vt-font() \n\
+Ctrl <Btn5Down>: smaller-vt-font() \n\
+Ctrl <Btn4Down>: larger-vt-font() \n\
+Ctrl <Btn1Up>: exec-formatted("x-www-browser '%t'", PRIMARY)
+! base colors
+XTerm*background: black
+XTerm*foreground: white
+XTerm*cursorColor: yellow
+! molokai theme (darker)
+XTerm*color0: #000000
+XTerm*color1: #960050
+XTerm*color2: #66aa11
+XTerm*color3: #c47f2c
+XTerm*color4: #30309b
+XTerm*color5: #7e40a5
+XTerm*color6: #3579a8
+XTerm*color7: #9999aa
+XTerm*color8: #303030
+XTerm*color9: #ff0090
+XTerm*color10: #80ff00
+XTerm*color11: #ffba68
+XTerm*color12: #5f5fee
+XTerm*color13: #bb88dd
+XTerm*color14: #4eb4fa
+XTerm*color15: #ffffff

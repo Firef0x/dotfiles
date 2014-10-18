@@ -1,0 +1,212 @@
+# /etc/myaliases : My Own Aliases
+
+# aliases {{{1
+# [Disabled]Wine aliases {{{2
+# alias wine='/usr/bin/env WINEDEBUG=-all WINEPREFIX=~/.wine LANG=zh_CN.utf8 wine'
+# alias regedit='/usr/bin/env WINEPREFIX=~/.wine regedit'
+# alias winecfg='/usr/bin/env WINEPREFIX=~/.wine winecfg'
+# }}}
+
+# Some more ls aliases {{{2
+alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
+alias ll='ls -alhF'                 # show verbose info and hidden file
+alias la='ls -A'
+alias l='ls -CF'
+alias lr='ls -R'                    # recursive ls
+alias lx='ll -BX'                   # sort by extension
+alias lz='ll -rS'                   # sort by size
+alias lt='ll -rt'                   # sort by date
+# }}}
+
+# Some more aliases {{{2
+# alias sudo='sudo '
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias cp="cp -i"                          # confirm before overwriting something
+alias df='df -h'                          # human-readable sizes
+alias du='du -c -h'                 # show human-readable size and total amount at the end
+alias free='free -m'                      # show sizes in MB
+alias vi='vim'
+alias pingb=' ping -c 4 www.baidu.com'
+alias clear=' reset'
+alias mkdir='mkdir -p -v'
+# mv -iv
+# asks confirmation to delete three or more files, lists the operations in
+# progress and does not store itself in the shell history file.
+alias mv=' mv -iv'
+# rm -Iv --one-file-system
+# asks confirmation to delete three or more files, lists the operations in
+# progress, does not involve more than one file systems and does not store
+# itself in the shell history file.
+# 'rm -i' prompts for every file
+alias rm=' rm -Iv --one-file-system'
+alias rmrf=' sudo rm -rfIv --one-file-system'
+alias bid='sudo burg-install --no-floppy /dev/sda'
+alias chgrp='chgrp --preserve-root'
+alias chmod='chmod --preserve-root'
+alias chown='chown --preserve-root'
+alias find='sudo find'
+alias ka='sudo killall'
+alias ln='ln -i'
+alias psg='ps -aux|ag'
+alias shred=' shred -v'
+# Run Fbterm with Fcitx Input Method
+# alias fbt='fcitx > /dev/null 2>&1 && fbterm'
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+# You can use: make; alert to nofify you when compile complete
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias gproxy="export http_proxy='127.0.0.1:8087' https_proxy='127.0.0.1:8087' HTTP_PROXY='127.0.0.1:8087' HTTPS_PROXY='127.0.0.1:8087'"
+# }}}
+
+# Pacman & Yaourt aliases {{{2
+alias pacman='sudo pacman'
+
+# -S = --sync {{{3
+alias pS='pacman -S'
+# alias Sc='pacman -Sc'
+alias Sc='sudo paccache -r && sudo paccache -ruk0'
+alias Si='yaourt -Si'
+alias Ss='pacman -Ss'
+alias ySs='yaourt -Ss'
+alias Su='pacman -Su'
+alias Sua='yaourt -Sua'
+alias Syu='pacman -Syu'
+alias Syy='pacman -Syy'
+# }}}
+
+# -Q = --query {{{3
+alias Qi='pacman -Qi'
+alias Ql='pacman -Ql'
+alias Qs='pacman -Qs'
+alias Qtd='pacman -Qtd'
+# }}}
+
+# Other {{{3
+alias yC='yaourt -C'
+alias yG='yaourt -G'
+alias Runs='pacman -Runs'
+alias yS='yaourt -S'
+alias pU='pacman -U'
+alias Asic='makepkg -Asic'
+alias Asi='makepkg -Asi'
+alias Ase='makepkg -Ase'
+alias As='makepkg -As'
+# }}}
+
+# Functions {{{3
+# 找出该文件属于哪个包
+Qo()
+{
+  pacman -Qo `which $1` 2>/dev/null
+  if [ $? -ne 0 ]; then
+    pacman -Qo $1
+  fi
+}
+# 找出不被任何包依赖的包
+paclean()
+{
+  expac "%n %N" -Q $(expac "%n %G" | grep -v ' base') | awk '$2 == "" {print $1}'
+}
+# }}}
+# }}}
+
+# Grep functions aliases {{{2
+alias ag='ag --line-numbers --color --nogroup --hidden --smart-case -C4'
+alias grepr='grep -rI --color --exclude-dir=\.bzr --exclude-dir=\.git --exclude-dir=\.hg --exclude-dir=\.svn --exclude-dir=build --exclude-dir=dist --exclude=tags'
+ngrep()
+{
+#usage() {
+#(
+#echo "Usage:    `basename $0` ['grep options'] search_string glob_pattern
+#examples: `basename $0` 'main' '*.[ch]'          #fixed string search
+#          `basename $0` '(main|mane)' '*.[ch]'   #regular expression search
+#          `basename $0` '-F' 'main(' '*.[ch]'    #force fixed string search
+#          `basename $0` '-L -F' 'main(' '*.[ch]' #extra grep options"
+#) >&2
+#    exit 1
+#}
+
+#if [ "$#" -ne "2" ] && [ "$#" -ne "3" ]; then
+#    usage
+#fi
+
+#enable search highlighting if supported by grep
+  echo | grep --color=auto "" >/dev/null 2>&1 && colour="--color=auto"
+
+  if [ "$#" -eq "3" ]; then
+      grep_options="$1"
+      shift
+  fi
+
+#default to -E or -F as appropriate, not -G
+  if ! printf "%s\n" "$grep_options" |
+      grep -E -- "-([EFGP]|regexp|fixed)" >/dev/null 2>&1; then
+      #used fixed string matching for speed unless an ERE metacharacter used
+      echo "$1" | grep '[.[\()*+?{|^$]' >/dev/null && type="-E" || type="-F"
+      grep_options="$grep_options $type"
+  fi
+
+  repodirs=".git .svn CVS .hg .bzr _darcs"
+  for dir in $repodirs; do
+      repo_ign="$repo_ign${repo_ign+" -o "}-name $dir"
+  done
+
+  find \( -type d -a \( $repo_ign \)  \) -prune -o \
+       \( -type f -name "$2" -print0 \) |
+#LANG=C is to work around grep multibyte inefficiencies
+#GREP_COLOR="1;37;47" is bright yellow on black bg
+  GREP_COLOR="1;33;40" LANG=C xargs -r0 grep $colour $grep_options -- "$1"
+}
+# }}}
+
+# Systemd functions aliases {{{2
+sudo_commands=(emergency halt hibernate poweroff reboot rescue)
+for c in $sudo_commands; do
+  alias sc-$c="sudo systemctl $c"
+done
+alias reboot=" sudo systemctl reboot"
+alias suspend=" sudo systemctl suspend"
+alias shutdown=" sudo systemctl poweroff"
+# }}}
+
+# Vim function {{{2
+# Save and then restore terminal settings
+vim()
+{
+  local STTYOPTS="$(stty --save)"
+  stty stop '' -ixoff
+  command vim "$@"
+  stty "$STTYOPTS"
+}
+# }}}
+
+# mkdir and cd into it {{{2
+function mkcd ()
+{
+  mkdir -p -v "$*"
+  cd "$*"
+}
+function rmcd()
+{
+  cd .. && rmdir "${OLDPWD##*/}"
+}
+# }}}
+
+# 彩色化 Man 帮助手册 {{{2
+man() {
+  env \
+    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+    LESS_TERMCAP_md=$(printf "\e[1;31m") \
+    LESS_TERMCAP_me=$(printf "\e[0m") \
+    LESS_TERMCAP_se=$(printf "\e[0m") \
+    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+    LESS_TERMCAP_ue=$(printf "\e[0m") \
+    LESS_TERMCAP_us=$(printf "\e[1;32m") \
+      man "$@"
+}
+# }}}
+# }}}
+
+# vim:ft=sh:fdm=marker:ai:et:sw=2:

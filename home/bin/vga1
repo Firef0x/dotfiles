@@ -1,0 +1,24 @@
+#! /bin/bash
+#
+# vga1.sh      This shell script takes care of adding and turning off VGA1
+#
+case "$1" in
+	a*)
+	xrandr --newmode $(gtf 1920 1080 60 |grep Modeline | sed s/Modeline\ // | tr -d '"')
+	xrandr --addmode VGA1 1920x1080_60.00
+	xrandr --output VGA1 --mode 1920x1080_60.00 --right-of LVDS1
+	;;
+	o*)
+	xrandr --output VGA1 --off
+	;;
+	q*)
+	xrandr -q
+	;;
+	*)
+	echo "  Usage: $0 {a|o|q}"
+	echo "  a    add VGA1 in the right of LVDS1"
+	echo "  o    turn off VGA1"
+	echo "  q    list all display"
+	exit 1
+	;;
+esac

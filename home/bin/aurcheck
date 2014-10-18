@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+pacman -Qmq | parallel --no-notice 'ver=($(package-query {} -AQ -f "%1")); [[ "${ver[0]}" != "${ver[1]}" ]] && echo {} ${ver[0]} != ${ver[1]}'
+
+#vim:set ts=2 sw=2 et:

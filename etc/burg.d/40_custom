@@ -1,0 +1,53 @@
+#!/bin/sh
+exec tail -n +3 $0
+# This file provides an easy way to add custom menu entries.  Simply type the
+# menu entries you want to add after this comment.  Be careful not to change
+# the 'exec tail' line above.
+
+menuentry "启动 Arch Bang 2013.09 修复CD" --class ubuntu --class gnu-linux --class gnu --class os {
+    set isofile="/archbang/archbang.iso"
+	set part="5"
+	set bootoptions="archisolabel=ARCHBANG img_dev=/dev/sda$part img_loop=$isofile earlymodules=loop"
+	loopback loop (hd0,$part)/$isofile
+	linux    (loop)/arch/boot/x86_64/vmlinuz $bootoptions
+	initrd   (loop)/arch/boot/x86_64/archiso.img
+}
+#menuentry "启动 Ubuntu 13.04 修复CD" --class ubuntu --class gnu-linux --class gnu --class os {
+#   set isofile="/ubuntu/ubuntu.iso"
+#	set part="5"
+#	set bootoptions="boot=casper iso-scan/filename=$isofile ro quiet noeject noprompt splash locale=zh_CN.UTF-8"
+#	loopback loop (hd0,$part)/$isofile
+#	linux	(loop)/casper/vmlinuz.efi $bootoptions
+#	initrd	(loop)/casper/initrd.lz
+#}
+menuentry "启动 Grub4Dos" --class kubuntu --class gnu-linux --class gnu --class os {
+	savedefault
+	insmod ntfs
+	set root='(hd0,1)'
+	search --no-floppy --fs-uuid --set=root 1e680ca5680c7e31
+	drivemap -s (hd0) ${root}
+	ntldr /galdr
+}
+menuentry "启动 通用PE工具箱" --class windows1 --class gnu-linux --class gnu --class os {
+	search --no-floppy --fs-uuid --set=root 6E9085A3908571FF
+	ntldr /8888/BOOTMGR
+}
+#menuentry "启动 再生龙备份系统 1.2.12" --class macOSX --class gnu-linux --class gnu --class os{
+	#search --no-floppy --fs-uuid --set=root 0002-AAAE
+	#linux /cz/live-hd/vmlinuz boot=live union=aufs vga=788 ip=frommedia live-media-path=/cz/live-hd bootfrom=/dev/sda5 toram=filesystem.squashfs config
+	#initrd /cz/live-hd/initrd.img
+#}
+#menuentry "启动 Back Track 5 R2" --class redhat --class gnu-linux --class gnu --class os{
+   #insmod   ext2
+   #search --no-floppy --fs-uuid --set=root 0002-AAAE
+   #linux   /casper/vmlinuz BOOT=casper boot=casper persistent rw quiet vga=0x317
+   #initrd   /casper/initrd.gz
+#}
+menuentry "启动 Kali Linux 1.03" --class debian --class gnu-linux --class gnu --class os{
+	set isofile="/kali/kali.iso"
+	set part="6"
+    bootoptions="findiso=$isofile boot=live noconfig=sudo username=root hostname=kali quiet splash noswap"
+	loopback loop (hd0,$part)/$isofile
+    linux (loop)/live/vmlinuz $bootoptions
+    initrd (loop)/live/initrd.img
+}

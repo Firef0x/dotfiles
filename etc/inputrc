@@ -1,0 +1,59 @@
+# do not bell on tab-completion
+set bell-style none
+
+set meta-flag on
+set input-meta on
+set convert-meta off
+set output-meta on
+#自动补全时忽略大小写
+set completion-ignore-case on
+#将所有自动补全文件名中相同的部分以...代替
+set completion-prefix-display-length 2
+#将下划线_和连接符-当作同一个字符看待
+set completion-map-case on
+# Tab once to show possible completion
+set show-all-if-unmodified on
+# Set Vi Mode
+$if mode=vi
+	set editing-mode vi
+	set keymap vi-command
+	"\e[A":history-search-backward
+	"\e[B":history-search-forward
+	set keymap vi-insert
+	"\e[A":history-search-backward
+	"\e[B":history-search-forward
+$endif
+
+$if mode=emacs
+
+# for linux console and RH/Debian xterm
+"\e[1~": beginning-of-line
+"\e[4~": end-of-line
+"\e[5~": beginning-of-history
+"\e[6~": end-of-history
+"\e[7~": beginning-of-line
+"\e[3~": delete-char
+"\e[2~": quoted-insert
+"\e[5C": forward-word
+"\e[5D": backward-word
+"\e\e[C": forward-word
+"\e\e[D": backward-word
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
+"\e[A":history-search-backward
+"\e[B":history-search-forward
+
+# for rxvt
+"\e[8~": end-of-line
+
+# for non RH/Debian xterm, can't hurt for RH/DEbian xterm
+"\eOH": beginning-of-line
+"\eOF": end-of-line
+
+# for freebsd console
+"\e[H": beginning-of-line
+"\e[F": end-of-line
+$endif
+
+#wraps the line in sudo ''
+"\es":"\C-a sudo '\C-e'\C-m"

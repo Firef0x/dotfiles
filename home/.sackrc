@@ -1,0 +1,70 @@
+#!/bin/bash
+#
+# @author Sampson L. Chen (sampson-chen / slchen)
+# @date 2012-10-14
+# 
+# @description
+# - Configuration file for sack
+
+# The shortcut command is F, as in (F)ollow
+sack__shortcut_cmd=F
+
+# File to store the shortcuts so they can be used across terminal / shell sessions
+sack__shortcut_file=~/.sack_shortcuts
+
+# Toggle the instructions after search results; 0 for off
+sack__show_instructions=0
+
+# Variable(s) to remove magic values from the code
+sack__dev_null=/dev/null
+
+# Determine the OS
+sack__OS=$(uname)
+
+# @todo: add support for editors other than vim and emacs
+sack__default_editor="gvim --remote-silent"
+
+# # # # # # sack profiles # # # # # #
+# (Note: do not edit the beacon tags)
+# sack__beacon_tag_profiles
+#
+sack__profile_name=no_profile
+sack__profile_preset_flags="--line-numbers --color --nogroup --hidden --smart-case -C4"
+sack__profile_preset_directory=""
+#
+sack__profile_name=burg
+sack__profile_preset_flags="-i"
+# sack__profile_preset_flags="--line-numbers --color --nogroup --hidden --smart-case -C4"
+sack__profile_preset_directory="/media/D/codes/C++/workspace/burg/"
+#
+sack__profile_name=codes
+sack__profile_preset_flags="--line-numbers --color --nogroup --hidden --smart-case -C4"
+sack__profile_preset_directory="~/codes/"
+#
+sack__profile_name=package
+sack__profile_preset_flags="--line-numbers --color --nogroup --hidden --smart-case -C4"
+sack__profile_preset_directory="~/package/"
+#
+sack__profile_name=dcodes
+sack__profile_preset_flags="--line-numbers --color --nogroup --hidden --smart-case -C4"
+sack__profile_preset_directory="/media/D/codes/"
+#
+sack__profile_name=web
+sack__profile_preset_flags="--line-numbers --color --nogroup --hidden --smart-case -C4"
+sack__profile_preset_directory="/media/D/Web/"
+#
+sack__profile_name=RB
+sack__profile_preset_flags="-i"
+sack__profile_preset_directory="~/src/"
+#
+# sack__beacon_tag_new_profiles
+
+# sack__beacon_tag_current_profile BEGIN
+#
+sack__profile_name=no_profile
+sack__profile_preset_flags="--line-numbers --color --nogroup --hidden --smart-case -C4"
+sack__profile_preset_directory=""
+#
+# sack__beacon_tag_current_profile END
+
+# # # # # # # # # # # # # # # # # #
