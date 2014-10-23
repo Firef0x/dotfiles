@@ -26,7 +26,7 @@
 ##
 ## Groups of commands.  Often used to group related commands together.
 Cmnd_Alias PROCESSES = /usr/bin/nice, /usr/bin/renice, /usr/bin/ionice, /usr/bin/pkill, /usr/bin/killall, /usr/bin/kill, /usr/bin/top, /usr/bin/htop, /usr/bin/powertop, /usr/bin/ps
-Cmnd_Alias ARCHLINUX = /usr/bin/pacman, /usr/bin/paccache
+Cmnd_Alias ARCHLINUX = /usr/bin/pacman, /usr/bin/paccache, /usr/bin/pacman-key
 Cmnd_Alias WHEELER   = /usr/bin/mount, /usr/bin/umount, /usr/bin/systemctl, /usr/bin/find, /usr/bin/pm-suspend, /usr/bin/vim
 Cmnd_Alias BURG      = /usr/bin/burg-install, /usr/bin/update-burg
 Cmnd_Alias NETWORK   = /usr/bin/nmcli, /usr/bin/airodump-ng, /usr/bin/airmon-ng, /usr/bin/aircrack-ng, /usr/bin/nmap, /usr/bin/zenmap, /usr/bin/fern
