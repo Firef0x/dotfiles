@@ -64,6 +64,8 @@ for f in adobe/mms.cfg \
          nginx/nginx.conf \
          pacman.conf \
          passwd \
+         pam.d/login \
+         pam.d/passwd \
          php/php.ini \
          profile \
          profile.d/infinality-settings.sh \
