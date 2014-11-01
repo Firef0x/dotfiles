@@ -68,13 +68,13 @@ for f in adobe/mms.cfg \
          pam.d/passwd \
          php/php.ini \
          profile \
-         profile.d/infinality-settings.sh \
          psd.conf \
          slim.conf \
          timezone \
          tsocks.conf \
          systemd/system/goagent.service.d/nostdout.conf \
          vconsole.conf \
+         X11/xinit/xinitrc.d/infinality-settings \
          yaourtrc; do
   update ${ETC_PATH}/$f ${ABSOLUTE_ETC_PATH}/$f
 done
