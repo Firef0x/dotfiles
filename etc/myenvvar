@@ -3,12 +3,10 @@
 # JAVA HOME path fonts setting etc. {{{2
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=gasp'
 export JAVA_FONTS=/usr/share/fonts/TTF
-export JAVA_HOME=/opt/java
 # }}}
 
 # Set our default path {{{2
-export PATH="/home/f/bin:/usr/local/sbin:/usr/local/bin:${JAVA_HOME}/bin:$PATH"
-export CLASSPATH=".:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib/tools.jar"
+export PATH="/home/f/bin:/usr/local/sbin:/usr/local/bin:$PATH"
 # For python-powerline-git
 # export PYTHONPATH="/usr/lib/python3.4/site-packages"
 # }}}
