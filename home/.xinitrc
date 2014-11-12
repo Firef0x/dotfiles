@@ -18,7 +18,7 @@ export QT_IM_MODULE=fcitx
 export LANG="zh_CN.UTF-8"
 export LC_ALL="zh_CN.UTF-8"
 
-# GNOME Keyring
+# Start GNOME Keyring
 eval $(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh)
 
 # 手动读取 .Xresources

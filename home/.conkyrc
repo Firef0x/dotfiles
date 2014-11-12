@@ -21,7 +21,7 @@ out_to_console no
 use_xft yes
 
 # Xft font when Xft is enabled
-xftfont WenQuanYi Zen Hei Mono:size=9
+xftfont WenQuanYi Zen Hei Mono:size=12
 
 #own_window_transparent no
 #own_window_colour hotpink
@@ -208,14 +208,14 @@ uppercase no
 # ${color red}${font WenQuanYi Zen Hei Mono:size=15}${time %b%d日 星期%a}${alignr}  ${color red}${time %H:%M:%S}${color}
 
 TEXT
-${font WenQuanYi Zen Hei Mono:size=9}
+${font WenQuanYi Zen Hei Mono:size=12}
 ${color green}系统信息 ${hr 1}${color}
 # 计算机名: $alignr$nodename  
 内核版本: $alignr$kernel
 启动时长: $alignr$uptime
 CPU 温度: $alignr${acpitemp}°C
 处理器主频: ${alignr}${freq dyn} MHz
-剩余电量:$alignr${battery}
+# 剩余电量:$alignr${battery}
 活跃进程数: ${alignr}$processes ($running_processes running)
 处理器负载: ${alignr}$loadavg
 处理器 1 ${alignr}${cpu cpu1}%
@@ -234,7 +234,7 @@ ${top_mem name 1}$alignr${top_mem cpu 1}${top_mem mem 1}
 ${top_mem name 2}$alignr${top_mem cpu 2}${top_mem mem 2}
 ${top_mem name 3}$alignr${top_mem cpu 3}${top_mem mem 3}
 
-${color green}文件系统 ${hr 1}${color}
+${color red}文件系统 ${hr 1}${color}
 Root: ${alignr}${fs_free /} / ${fs_size /}
 ${fs_bar 4 /}
 Home: ${alignr}${fs_free /home} / ${fs_size /home}
@@ -242,7 +242,7 @@ ${fs_bar 4 /home}
 Var: ${alignr}${fs_free /var} / ${fs_size /var}
 ${fs_bar 4 /var}
 
-${color green}网络链接 ${hr 1}${color}
+${color red}网络链接 ${hr 1}${color}
 下载 ${downspeed wlp2s0} k/s ${alignr}上传 ${upspeed wlp2s0} k/s
 ${downspeedgraph wlp2s0 25,107} ${alignr}${upspeedgraph wlp2s0 25,107}
 总下载 ${totaldown wlp2s0} ${alignr}总上传 ${totalup wlp2s0}
