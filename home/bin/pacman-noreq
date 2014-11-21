@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# 找出不被任何包依赖的包
+
+expac "%n %N" -Q $(expac "%n %G" | grep -v ' base') | awk '$2 == "" {print $1}'
+#vim:set ts=2 sw=2 et:

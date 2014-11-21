@@ -79,6 +79,8 @@ alias Syy='pacman -Syy'
 # -Q = --query {{{3
 alias Qi='pacman -Qi'
 alias Ql='pacman -Ql'
+alias Qm='pacman -Qm'
+alias Qpi='pacman -Qpi'
 alias Qs='pacman -Qs'
 alias Qtd='pacman -Qtd'
 # }}}
@@ -103,11 +105,6 @@ Qo()
   if [ $? -ne 0 ]; then
     pacman -Qo $1
   fi
-}
-# 找出不被任何包依赖的包
-paclean()
-{
-  expac "%n %N" -Q $(expac "%n %G" | grep -v ' base') | awk '$2 == "" {print $1}'
 }
 # }}}
 # }}}
@@ -161,6 +158,16 @@ ngrep()
 }
 # }}}
 
+# Input method function {{{2
+# Restart sogou-qimpanel
+rsogou()
+{
+  fcitx --replace
+  pkill 'sogou-qimpanel*'
+  sogou-qimpanel &
+}
+# }}}
+
 # Systemd functions aliases {{{2
 sudo_commands=(emergency halt hibernate poweroff reboot rescue)
 for c in $sudo_commands; do
@@ -183,7 +190,7 @@ vim()
 # }}}
 
 # mkdir and cd into it {{{2
-function mkcd ()
+function mkcd()
 {
   mkdir -p -v "$*"
   cd "$*"

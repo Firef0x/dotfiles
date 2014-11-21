@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
+# 检查自己 Arch 里装的 AUR 包是否和社区同步
+# 取自 https://www.archlinuxcn.org/one-line-bash-check-if-aur-packages-in-your-arch-sync-with-community/
 
 pacman -Qmq | parallel --no-notice 'ver=($(package-query {} -AQ -f "%1")); [[ "${ver[0]}" != "${ver[1]}" ]] && echo {} ${ver[0]} != ${ver[1]}'
-
 #vim:set ts=2 sw=2 et:
