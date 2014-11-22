@@ -1,7 +1,8 @@
 # /etc/myenvvar : My Own Environment Variables
 # Customize Environment Variable {{{1
-# JAVA HOME path fonts setting etc. {{{2
-export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=gasp'
+# Java fonts setting {{{2
+# These settings are from https://wiki.archlinux.org/index.php/Java_Runtime_Environment_Fonts
+export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.systemlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
 export JAVA_FONTS=/usr/share/fonts/TTF
 # }}}
 
