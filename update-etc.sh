@@ -16,7 +16,7 @@ fail() {
 update() {
   local src=$1
   local dest=$2
-  [ !  -e "$src" ] && fail "Copy source does not exit: $src"
+  [ !  -e "$src" ] && fail "Copy source does not exist: $src"
 
   #if the source is a symlink, make sure its up-to-date
   if [ -h "$dest" ]; then
@@ -52,6 +52,7 @@ for f in adobe/mms.cfg \
          environment \
          fstab \
          group \
+         gimp/2.0/fonts.conf \
          inputrc \
          makepkg.conf \
          mkinitcpio.d/linux-ck.preset \
