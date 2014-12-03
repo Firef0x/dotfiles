@@ -76,6 +76,7 @@ for f in adobe/mms.cfg \
          systemd/system/goagent.service.d/nostdout.conf \
          vconsole.conf \
          X11/xinit/xinitrc.d/infinality-settings \
+         xdg/menus/arch-applications.menu \
          yaourtrc; do
   update ${ETC_PATH}/$f ${ABSOLUTE_ETC_PATH}/$f
 done
