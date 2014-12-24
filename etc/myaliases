@@ -1,13 +1,13 @@
 # /etc/myaliases : My Own Aliases
 
-# aliases {{{1
-# [Disabled]Wine aliases {{{2
+# Aliases {{{1
+#   [Disabled]Wine aliases {{{2
 # alias wine='/usr/bin/env WINEDEBUG=-all WINEPREFIX=~/.wine LANG=zh_CN.utf8 wine'
 # alias regedit='/usr/bin/env WINEPREFIX=~/.wine regedit'
 # alias winecfg='/usr/bin/env WINEPREFIX=~/.wine winecfg'
 # }}}
 
-# Some more ls aliases {{{2
+#   Ls aliases {{{2
 alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias ll='ls -alhF'                 # show verbose info and hidden file
 alias la='ls -A'
@@ -18,7 +18,7 @@ alias lz='ll -rS'                   # sort by size
 alias lt='ll -rt'                   # sort by date
 # }}}
 
-# Some more aliases {{{2
+#   Some more aliases {{{2
 # alias sudo='sudo '
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -49,7 +49,6 @@ alias chown='chown --preserve-root'
 alias find='sudo find'
 alias ka='sudo killall'
 alias ln='ln -i'
-alias psg='ps -aux|ag'
 alias shred=' shred -v'
 # Run Fbterm with Fcitx Input Method
 # alias fbt='fcitx > /dev/null 2>&1 && fbterm'
@@ -57,16 +56,26 @@ alias shred=' shred -v'
 #   sleep 10; alert
 # You can use: make; alert to nofify you when compile complete
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias gproxy="export http_proxy='127.0.0.1:8087' https_proxy='127.0.0.1:8087' HTTP_PROXY='127.0.0.1:8087' HTTPS_PROXY='127.0.0.1:8087'"
+alias gproxy=" export http_proxy='127.0.0.1:8087' https_proxy='127.0.0.1:8087' HTTP_PROXY='127.0.0.1:8087' HTTPS_PROXY='127.0.0.1:8087'"
 # }}}
 
-# Pacman & Yaourt aliases {{{2
+#   Pacman & Yaourt aliases {{{2
 alias pacman='sudo pacman'
 
-# -S = --sync {{{3
+#     -Q = --query {{{3
+alias Qi='pacman -Qi'
+alias Ql='pacman -Ql'
+alias Qm='pacman -Qm'
+alias Qpi='pacman -Qpi'
+alias Qs='pacman -Qs'
+alias Qtd='pacman -Qtd'
+# }}}
+
+#     -S = --sync {{{3
 alias pS='pacman -S'
 # alias Sc='pacman -Sc'
 alias Sc='sudo paccache -r && sudo paccache -ruk0'
+alias Sg='pacman -Sg'
 alias Si='yaourt -Si'
 alias Ss='pacman -Ss'
 alias ySs='yaourt -Ss'
@@ -76,25 +85,20 @@ alias Syu='pacman -Syu'
 alias Syy='pacman -Syy'
 # }}}
 
-# -Q = --query {{{3
-alias Qi='pacman -Qi'
-alias Ql='pacman -Ql'
-alias Qm='pacman -Qm'
-alias Qpi='pacman -Qpi'
-alias Qs='pacman -Qs'
-alias Qtd='pacman -Qtd'
-# }}}
-
-# Other {{{3
+#     Other {{{3
 alias yC='yaourt -C'
 alias yG='yaourt -G'
 alias Runs='pacman -Runs'
 alias yS='yaourt -S'
 alias pU='pacman -U'
+# }}}
+
+#     Makepkg && Mkaurball {{{3
 alias Asic='makepkg -Asic'
 alias Asi='makepkg -Asi'
 alias Ase='makepkg -Ase'
 alias As='makepkg -As'
+alias mab='mkaurball -f --skipinteg'
 # }}}
 
 # Functions {{{3
@@ -109,56 +113,61 @@ Qo()
 # }}}
 # }}}
 
-# Grep functions aliases {{{2
+#   Grep & Ag functions aliases {{{2
 alias ag='ag --line-numbers --color --nogroup --hidden --smart-case -C4'
 alias grepr='grep -rI --color --exclude-dir=\.bzr --exclude-dir=\.git --exclude-dir=\.hg --exclude-dir=\.svn --exclude-dir=build --exclude-dir=dist --exclude=tags'
 ngrep()
 {
-#usage() {
-#(
-#echo "Usage:    `basename $0` ['grep options'] search_string glob_pattern
-#examples: `basename $0` 'main' '*.[ch]'          #fixed string search
-#          `basename $0` '(main|mane)' '*.[ch]'   #regular expression search
-#          `basename $0` '-F' 'main(' '*.[ch]'    #force fixed string search
-#          `basename $0` '-L -F' 'main(' '*.[ch]' #extra grep options"
-#) >&2
-#    exit 1
-#}
+  #usage() {
+  #(
+  #echo "Usage:    `basename $0` ['grep options'] search_string glob_pattern
+  #examples: `basename $0` 'main' '*.[ch]'          #fixed string search
+  #          `basename $0` '(main|mane)' '*.[ch]'   #regular expression search
+  #          `basename $0` '-F' 'main(' '*.[ch]'    #force fixed string search
+  #          `basename $0` '-L -F' 'main(' '*.[ch]' #extra grep options"
+  #) >&2
+  #    exit 1
+  #}
 
-#if [ "$#" -ne "2" ] && [ "$#" -ne "3" ]; then
-#    usage
-#fi
+  #if [ "$#" -ne "2" ] && [ "$#" -ne "3" ]; then
+  #    usage
+  #fi
 
-#enable search highlighting if supported by grep
+  #enable search highlighting if supported by grep
   echo | grep --color=auto "" >/dev/null 2>&1 && colour="--color=auto"
 
   if [ "$#" -eq "3" ]; then
-      grep_options="$1"
-      shift
+    grep_options="$1"
+    shift
   fi
 
-#default to -E or -F as appropriate, not -G
+  #default to -E or -F as appropriate, not -G
   if ! printf "%s\n" "$grep_options" |
-      grep -E -- "-([EFGP]|regexp|fixed)" >/dev/null 2>&1; then
-      #used fixed string matching for speed unless an ERE metacharacter used
-      echo "$1" | grep '[.[\()*+?{|^$]' >/dev/null && type="-E" || type="-F"
-      grep_options="$grep_options $type"
+    grep -E -- "-([EFGP]|regexp|fixed)" >/dev/null 2>&1; then
+    #used fixed string matching for speed unless an ERE metacharacter used
+    echo "$1" | grep '[.[\()*+?{|^$]' >/dev/null && type="-E" || type="-F"
+    grep_options="$grep_options $type"
   fi
 
   repodirs=".git .svn CVS .hg .bzr _darcs"
   for dir in $repodirs; do
-      repo_ign="$repo_ign${repo_ign+" -o "}-name $dir"
+    repo_ign="$repo_ign${repo_ign+" -o "}-name $dir"
   done
 
   find \( -type d -a \( $repo_ign \)  \) -prune -o \
-       \( -type f -name "$2" -print0 \) |
-#LANG=C is to work around grep multibyte inefficiencies
-#GREP_COLOR="1;37;47" is bright yellow on black bg
+    \( -type f -name "$2" -print0 \) |
+  #LANG=C is to work around grep multibyte inefficiencies
+  #GREP_COLOR="1;37;47" is bright yellow on black bg
   GREP_COLOR="1;33;40" LANG=C xargs -r0 grep $colour $grep_options -- "$1"
+}
+# Grep process name
+psg()
+{
+  ps auxww | ag $1 | ag -v ag
 }
 # }}}
 
-# Input method function {{{2
+#   Input method functions {{{2
 # Restart sogou-qimpanel
 rsogou()
 {
@@ -168,17 +177,20 @@ rsogou()
 }
 # }}}
 
-# Systemd functions aliases {{{2
-sudo_commands=(emergency halt hibernate poweroff reboot rescue)
+#   Systemd functions aliases {{{2
+sudo_commands=(emergency halt hibernate rescue)
 for c in $sudo_commands; do
   alias sc-$c="sudo systemctl $c"
 done
-alias reboot=" sudo systemctl reboot"
-alias suspend=" sudo systemctl suspend"
-alias shutdown=" sudo systemctl poweroff"
+# 重启 (拼音首字母)
+alias cq=" sudo systemctl reboot"
+# 挂起 (拼音首字母)
+alias gq=" sudo systemctl suspend"
+# 关机 (拼音首字母)
+alias gj=" sudo systemctl poweroff"
 # }}}
 
-# Vim function {{{2
+#   Vim functions {{{2
 # Save and then restore terminal settings
 vim()
 {
@@ -189,7 +201,7 @@ vim()
 }
 # }}}
 
-# mkdir and cd into it {{{2
+#   mkdir and cd into it {{{2
 function mkcd()
 {
   mkdir -p -v "$*"
@@ -201,7 +213,7 @@ function rmcd()
 }
 # }}}
 
-# 彩色化 Man 帮助手册 {{{2
+#   彩色化 Man 帮助手册 {{{2
 man() {
   env \
     LESS_TERMCAP_mb=$(printf "\e[1;31m") \
@@ -216,4 +228,6 @@ man() {
 # }}}
 # }}}
 
+# Vim Modeline {{{1
 # vim:ft=sh:fdm=marker:ai:et:sw=2:
+# }}}
