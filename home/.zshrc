@@ -5,8 +5,7 @@ ZSH=/usr/share/oh-my-zsh/
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-# ZSH_THEME="agnoster"
-ZSH_THEME="bullet-train"
+ZSH_THEME="agnoster"
 
 DEFAULT_USER="f"
 
@@ -63,6 +62,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# Customize to your needs...
+
 # 命令渐进提示
 # source /home/f/incr-0.2.zsh
 ## auto-fu.zsh stuff.
@@ -79,31 +80,43 @@ zle -N zle-keymap-select auto-fu-zle-keymap-select
 # 引入环境变量及命令别名
 source /etc/myenvvar
 source /etc/myaliases
+
 # Powerline
 . /usr/share/zsh/site-contrib/powerline.zsh
 
-# Customize to your needs...
-#在没有输入任何内容的情况下按 TAB ，自动填入 "cd [TAB]"
+# 在没有输入任何内容的情况下按 TAB ，自动填入 "cd [TAB]"
 user-complete(){
-    if [[ -n $BUFFER ]] ; then     # 如果该行有内容
-        zle expand-or-complete    # 执行 TAB 原来的功能
-    else                                  # 如果没有
-        BUFFER="cd "                 # 填入 cd（空格）
-        zle end-of-line                # 这时光标在行首，移动到行末
-        zle expand-or-complete    # 执行 TAB 原来的功能
-    fi }
+  if [[ -n $BUFFER ]] ; then  # 如果该行有内容
+    zle expand-or-complete    # 执行 TAB 原来的功能
+  else                        # 如果没有
+    BUFFER="cd "              # 填入 cd（空格）
+    zle end-of-line           # 这时光标在行首，移动到行末
+    zle expand-or-complete    # 执行 TAB 原来的功能
+  fi
+}
 zle -N user-complete
-bindkey "\t" user-complete        #将上面的功能绑定到 TAB 键
+bindkey "\t" user-complete    # 将上面的功能绑定到 TAB 键
+
 # Enhanced History Search
 bindkey "^[[A" history-search-backward
 bindkey "^[[B" history-search-forward
+
 # Emulate 256 color mode only when fbterm is active
 [ -n "$FBTERM" ] && export TERM=fbterm
+
 # 不保留重复的历史记录项
 setopt hist_ignore_all_dups
+
 # 在命令前添加空格，不将此命令添加到记录文件中
 setopt hist_ignore_space
+
 # zsh 4.3.6 doesn't have this option
 setopt hist_fcntl_lock 2>/dev/null
 setopt hist_reduce_blanks
-# vim:filetype=zsh:foldmethod=marker:autoindent:expandtab:shiftwidth=4
+
+# FIXME 警告 "grep: warning: GREP_OPTIONS is deprecated; please use an alias or script" 的临时解决方法
+# 取自 https://bbs.archlinux.org/viewtopic.php?pid=1478573
+# alias grep="/usr/bin/grep $GREP_OPTIONS"
+# unset GREP_OPTIONS
+
+# vim:filetype=zsh:foldmethod=marker:autoindent:expandtab:shiftwidth=2:tabstop=2:softtabstop=2
