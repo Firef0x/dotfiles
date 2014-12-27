@@ -59,6 +59,10 @@ for f in adobe/mms.cfg \
          mkinitcpio.conf \
          mkinitcpio.fallback.conf \
          modprobe.d/modprobe.conf \
+         modules-load.d/acpi-cpufreq.conf \
+         modules-load.d/cpufreq_ondemand.conf \
+         modules-load.d/cpufreq_powersave.conf \
+         modules-load.d/overlay.conf \
          myaliases \
          myenvvar \
          mysql/my.cnf \
