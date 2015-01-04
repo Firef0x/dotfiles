@@ -1,0 +1,30 @@
+{
+  "editor": "/usr/bin/gvim --remote-silent",
+  "profiles": {
+    "ag": {
+      "operator": "/usr/bin/ag",
+      "flags": "-S --color-match \"47;1;30\" --color-line-number \"0;37\" --ignore=\"*.pdf\"",
+      "prepend": ""
+    },
+    "all": {
+      "operator": "/usr/bin/ag",
+      "flags": "-uS --color-match \"47;1;30\" --color-line-number \"0;37\"",
+      "prepend": ""
+    },
+    "default": {
+      "operator": "/usr/bin/ag",
+      "flags": "--hidden --smart-case --follow --color-match \"47;1;30\" --color-line-number \"0;37\" --ignore=\"*.pdf\"",
+      "prepend": ""
+    },
+    "grep": {
+      "operator": "/usr/bin/grep",
+      "flags": "--color=always -EHIinR --exclude-dir=.bzr --exclude-dir=.git --exclude-dir=.svn",
+      "prepend": "GREP_COLORS=\"fn=1;32:ln=0;37:ms=47;1;30:mc=47;1;30:sl=:cx=:bn=:se=\""
+    },
+    "zoom_find": {
+      "operator": "/usr/bin/find",
+      "flags": ". -name",
+      "prepend": ""
+    }
+  }
+}

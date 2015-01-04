@@ -82,12 +82,12 @@ for f in .bash_profile \
          .pip \
          .pydistutils.cfg \
          .rarrc \
-         .sackrc \
          .tmux.conf \
          .xinitrc \
          .Xmodmap \
          .xprofile \
          .Xresources \
+         .zoomrc \
          .zsh \
          .zshrc \
          bin \
