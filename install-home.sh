@@ -97,7 +97,7 @@ done
 # }}}
 
 #  Symlink powerline config {{{2
-for f in powerline gtk-3.0; do
+for f in gtk-3.0 powerline redshift.conf; do
   symlink $ABSOLUTE_HOME_PATH/.config/$f $HOME/.config/$f
 done
 # }}}
