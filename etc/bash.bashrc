@@ -231,6 +231,9 @@ if ! shopt -oq posix; then
   elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
   fi
+
+  # 拼音补全
+  source /usr/share/pinyin-completion/shell/pinyin-comp.bash
 fi
 
 # }}}

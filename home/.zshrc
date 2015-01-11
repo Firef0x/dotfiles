@@ -81,6 +81,9 @@ zle -N zle-keymap-select auto-fu-zle-keymap-select
 source /etc/myenvvar
 source /etc/myaliases
 
+# 拼音补全
+source /usr/share/pinyin-completion/shell/pinyin-comp.zsh
+
 # Powerline
 . /usr/share/zsh/site-contrib/powerline.zsh
 
