@@ -8,10 +8,10 @@
 # }}}
 
 #   Ls aliases {{{2
-alias ls='ls --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
-alias ll='ls -alhF'                 # show verbose info and hidden file
+alias ls=' ls --group-directories-first --color=auto -F --time-style=+"%Y-%m-%d %H:%M:%S"'
+alias ll='ls -alh'                  # show verbose info and hidden file
 alias la='ls -A'
-alias l='ls -CF'
+alias l='ls -C'
 alias lr='ls -R'                    # recursive ls
 alias lx='ll -BX'                   # sort by extension
 alias lz='ll -rS'                   # sort by size
@@ -23,10 +23,13 @@ alias lt='ll -rt'                   # sort by date
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
-alias cp="cp -i"                          # confirm before overwriting something
-alias df='df -h'                          # human-readable sizes
-alias du='du -c -h'                 # show human-readable size and total amount at the end
-alias free='free -m'                      # show sizes in MB
+alias cp='cp -i'                    # confirm before overwriting something
+alias df=' df -Th'                  # human-readable sizes and file system type
+alias du=' du -ch'                  # show human-readable size and total amount at the end
+alias dus=' du -s *(/)'             # show directories size
+alias free=' free -m'               # show sizes in MB
+alias info=' info --vi-keys'
+alias rsync='rsync -P'              # show progress during transfer and keep partially transferred files
 alias vi='vim'
 alias pingb=' ping -c 4 www.baidu.com'
 alias clear=' reset'
@@ -114,8 +117,8 @@ Qo()
 # }}}
 
 #   Grep & Ag functions aliases {{{2
-alias ag='ag --line-numbers --color --nogroup --hidden --smart-case -C4'
-alias grepr='grep -rI --color --exclude-dir=\.bzr --exclude-dir=\.git --exclude-dir=\.hg --exclude-dir=\.svn --exclude-dir=build --exclude-dir=dist --exclude=tags'
+alias ag='ag --line-numbers --color --nogroup --hidden --follow --smart-case -C4'
+alias grepr='grep -rI --color=always --exclude-dir=\.bzr --exclude-dir=\.git --exclude-dir=\.hg --exclude-dir=\.svn --exclude-dir=build --exclude-dir=dist --exclude=tags'
 ngrep()
 {
   #usage() {
@@ -178,7 +181,7 @@ rsogou()
 # }}}
 
 #   Systemd functions aliases {{{2
-sudo_commands=(emergency halt hibernate rescue)
+sudo_commands=(daemon-reload emergency halt hibernate rescue)
 for c in $sudo_commands; do
   alias sc-$c="sudo systemctl $c"
 done
