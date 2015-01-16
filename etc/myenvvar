@@ -1,28 +1,33 @@
 # /etc/myenvvar : My Own Environment Variables
-# Customize Environment Variable {{{1
-# Java fonts setting {{{2
+#  Customize Environment Variable {{{1
+#    Java fonts setting {{{2
 # These settings are from https://wiki.archlinux.org/index.php/Java_Runtime_Environment_Fonts
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.systemlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
 export JAVA_FONTS=/usr/share/fonts/TTF
 # }}}
 
-# Set our default path {{{2
+#    Set our default path {{{2
 export PATH="/home/f/bin:/usr/local/sbin:/usr/local/bin:$PATH"
-# For python-powerline-git
+# [Disabled]For python-powerline-git
 # export PYTHONPATH="/usr/lib/python3.4/site-packages"
 # }}}
 
-# Force set default editor avoiding sudoers etc invokes /usr/bin/vi {{{2
+#    Force set default editor avoiding sudoers etc invokes /usr/bin/vi {{{2
 #export EDITOR=nano
 export EDITOR=vim
 export LESS="-RM"
 # }}}
 
-# [Disabled]CCache Directory {{{2
+#    [Disabled]CCache Directory {{{2
 # export CCACHE_DIR="/var/cache/ccache"
 # export CCACHE_UMASK=002
 # export CCACHE_LOGFILE="/var/cache/ccache/ccache.log"
 # }}}
-# }}}
 
-# vim:ft=sh:fdm=marker:ai:et:sw=2:
+#    Set fuzzy pinyin completion {{{2
+export FUZZY="{ 'n':'l' }"
+# }}}
+# }}}
+#  Vim Modeline: {{{1
+# vim:ft=sh:fdm=marker:ai:et:sw=2:ts=2:sts=2:
+# }}}
