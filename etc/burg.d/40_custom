@@ -32,22 +32,22 @@ menuentry "启动 通用PE工具箱" --class windows1 --class gnu-linux --class 
 	search --no-floppy --fs-uuid --set=root 6E9085A3908571FF
 	ntldr /8888/BOOTMGR
 }
-#menuentry "启动 再生龙备份系统 1.2.12" --class macOSX --class gnu-linux --class gnu --class os{
-	#search --no-floppy --fs-uuid --set=root 0002-AAAE
-	#linux /cz/live-hd/vmlinuz boot=live union=aufs vga=788 ip=frommedia live-media-path=/cz/live-hd bootfrom=/dev/sda5 toram=filesystem.squashfs config
-	#initrd /cz/live-hd/initrd.img
-#}
-#menuentry "启动 Back Track 5 R2" --class redhat --class gnu-linux --class gnu --class os{
-   #insmod   ext2
-   #search --no-floppy --fs-uuid --set=root 0002-AAAE
-   #linux   /casper/vmlinuz BOOT=casper boot=casper persistent rw quiet vga=0x317
-   #initrd   /casper/initrd.gz
-#}
-menuentry "启动 Kali Linux 1.03" --class debian --class gnu-linux --class gnu --class os{
-	set isofile="/kali/kali.iso"
-	set part="6"
-    bootoptions="findiso=$isofile boot=live noconfig=sudo username=root hostname=kali quiet splash noswap"
-	loopback loop (hd0,$part)/$isofile
-    linux (loop)/live/vmlinuz $bootoptions
-    initrd (loop)/live/initrd.img
-}
+# menuentry "启动 再生龙备份系统 1.2.12" --class macOSX --class gnu-linux --class gnu --class os{
+# 	search --no-floppy --fs-uuid --set=root 0002-AAAE
+# 	linux /cz/live-hd/vmlinuz boot=live union=aufs vga=788 ip=frommedia live-media-path=/cz/live-hd bootfrom=/dev/sda5 toram=filesystem.squashfs config
+# 	initrd /cz/live-hd/initrd.img
+# }
+# menuentry "启动 Back Track 5 R2" --class redhat --class gnu-linux --class gnu --class os{
+#    insmod   ext2
+#    search --no-floppy --fs-uuid --set=root 0002-AAAE
+#    linux   /casper/vmlinuz BOOT=casper boot=casper persistent rw quiet vga=0x317
+#    initrd   /casper/initrd.gz
+# }
+# menuentry "启动 Kali Linux 1.03" --class debian --class gnu-linux --class gnu --class os{
+# 	set isofile="/kali/kali.iso"
+# 	set part="6"
+#     bootoptions="findiso=$isofile boot=live noconfig=sudo username=root hostname=kali quiet splash noswap"
+# 	loopback loop (hd0,$part)/$isofile
+#     linux (loop)/live/vmlinuz $bootoptions
+#     initrd (loop)/live/initrd.img
+# }
