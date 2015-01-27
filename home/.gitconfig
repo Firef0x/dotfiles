@@ -1,5 +1,6 @@
 [merge]
 	tool = vimdiff
+	keepbackup = false
 [mergetool]
 	prompt = false
 [core]
