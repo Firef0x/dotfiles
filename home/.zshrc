@@ -65,7 +65,6 @@ source $ZSH/oh-my-zsh.sh
 # Customize to your needs...
 
 # 命令渐进提示
-# source /home/f/incr-0.2.zsh
 ## auto-fu.zsh stuff.
 # source /home/f/codes/auto-fu.zsh/auto-fu.zsh
 { . /home/f/.zsh/auto-fu; auto-fu-install; }
@@ -121,5 +120,16 @@ setopt hist_reduce_blanks
 # 取自 https://bbs.archlinux.org/viewtopic.php?pid=1478573
 # alias grep="/usr/bin/grep $GREP_OPTIONS"
 # unset GREP_OPTIONS
+
+# 补充 /usr/share/oh-my-zsh/plugins/git/git.plugin.zsh
+alias grfe='git reflog expire --expire=now --all'
+compdef _git grfe=git-reflog
+alias ggc='git gc --prune=now'
+compdef _git ggc=git-gc
+alias ggca='git gc --prune=now --aggressive'
+compdef _git ggca=git-gc
+
+# Set Zsh completion for osc
+export ZSH_OSC_PROJECTS_EXTRA="home:firef0x home:firef0x:testing"
 
 # vim:filetype=zsh:foldmethod=marker:autoindent:expandtab:shiftwidth=2:tabstop=2:softtabstop=2
