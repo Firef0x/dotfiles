@@ -54,6 +54,7 @@ for f in adobe/mms.cfg \
          group \
          gimp/2.0/fonts.conf \
          inputrc \
+         locale.conf \
          makepkg.conf \
          mkinitcpio.d/linux-ck.preset \
          mkinitcpio.conf \

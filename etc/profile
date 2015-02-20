@@ -3,10 +3,6 @@
 #Set our umask
 umask 022
 
-#Set Locale
-export LANG="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
-
 # Load profiles from /etc/profile.d
 if test -d /etc/profile.d/; then
 	for profile in /etc/profile.d/*.sh; do
