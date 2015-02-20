@@ -1,35 +1,35 @@
 {
 	"default_module": "powerline.segments.common",
 	"segment_data": {
-		"hostname": {
+		"powerline.segments.common.net.hostname": {
 			"before": " ",
 			"args": {
 				"only_if_ssh": true
 			}
 		},
-		"virtualenv": {
+		"powerline.segments.common.env.virtualenv": {
 			"before": "ⓔ  "
 		},
-		"branch": {
+		"powerline.segments.common.vcs.branch": {
 			"before": " "
 		}
 	},
 	"segments": {
 		"left": [
 			{
-				"function": "hostname",
+				"function": "powerline.segments.common.net.hostname",
 				"priority": 10
 			},
 			{
-				"function": "virtualenv",
+				"function": "powerline.segments.common.env.virtualenv",
 				"priority": 50
 			},
 			{
-				"function": "branch",
+				"function": "powerline.segments.common.vcs.branch",
 				"priority": 40
 			},
 			{
-				"function": "powerline.segments.common.date",
+				"function": "powerline.segments.common.time.date",
 				"priority": 10,
 				"args": {
 					"istime": true,
