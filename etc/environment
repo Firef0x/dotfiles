@@ -3,4 +3,35 @@
 #
 # Syntax: simple "KEY=VAL" pairs on separate lines
 #
-LANG=en_US.utf8
+
+#  Customize Environment Variable {{{1
+#    Java fonts setting {{{2
+# These settings are from https://wiki.archlinux.org/index.php/Java_Runtime_Environment_Fonts
+_JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=lcd -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.systemlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
+JAVA_FONTS=/usr/share/fonts/TTF
+# }}}
+
+#    Set our default path {{{2
+# [Disabled]For python-powerline-git
+# PYTHONPATH="/usr/lib/python3.4/site-packages"
+# }}}
+
+#    Force set default editor avoiding sudoers etc invokes /usr/bin/vi {{{2
+# EDITOR=nano
+EDITOR=vim
+LESS="-RM"
+# }}}
+
+#    [Disabled]CCache Directory {{{2
+# CCACHE_DIR="/var/cache/ccache"
+# CCACHE_UMASK=002
+# CCACHE_LOGFILE="/var/cache/ccache/ccache.log"
+# }}}
+
+#    Set fuzzy pinyin completion {{{2
+FUZZY="{ 'n':'l' }"
+# }}}
+# }}}
+#  Vim Modeline: {{{1
+# vim:ft=sh:fdm=marker:ai:et:sw=2:ts=2:sts=2:
+# }}}
