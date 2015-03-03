@@ -1,3 +1,4 @@
+adbusers:x:994:
 adm:x:4:root,daemon
 audio:x:92:
 bin:x:1:root,bin,daemon
@@ -25,6 +26,7 @@ nobody:x:99:
 optical:x:93:
 polkitd:x:102:
 power:x:98:
+proc:x:26:
 rfkill:x:24:
 root:x:0:root
 scanner:x:96:
@@ -33,6 +35,8 @@ storage:x:95:
 sys:x:3:root,bin
 systemd-bus-proxy:x:194:
 systemd-journal-gateway:x:191:
+systemd-journal-remote:x:996:
+systemd-journal-upload:x:995:
 systemd-journal:x:190:
 systemd-network:x:193:
 systemd-resolve:x:195:
@@ -44,6 +48,3 @@ uucp:x:14:
 uuidd:x:68:
 video:x:91:
 wheel:x:10:root
-systemd-journal-remote:x:996:
-systemd-journal-upload:x:995:
-adbusers:x:994:
