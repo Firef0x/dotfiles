@@ -19,3 +19,4 @@
 	tabwidth = 4
 	fontdiff = Inconsolata for Powerline,10,-1,5,50,0,0,0,0,0
 	textwidth = 72
+	linebreak = false
