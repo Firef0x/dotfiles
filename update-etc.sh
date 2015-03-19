@@ -76,9 +76,10 @@ for f in adobe/mms.cfg \
          profile \
          psd.conf \
          slim.conf \
+         ssh/sshd_config \
+         systemd/system/goagent.service.d/nostdout.conf \
          timezone \
          tsocks.conf \
-         systemd/system/goagent.service.d/nostdout.conf \
          vconsole.conf \
          X11/xinit/xinitrc.d/infinality-settings \
          xdg/menus/arch-applications.menu \
