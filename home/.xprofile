@@ -1,5 +1,13 @@
+#!/bin/sh
+#
+# ~/.xprofile
+#
+# Executed by startx (run your window manager from here)
+
+#设置 LightDM 管理器启动时的 Fcitx 环境变量
 export XMODIFIERS="@im=fcitx"
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
-killall fcitx
-fcitx &
+
+# 启动 GNOME Keyring
+eval $(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh)

@@ -1,0 +1,5 @@
+[com.canonical.unity-greeter]
+background='/usr/share/pixmaps/background.png'
+draw-grid=false
+icon-theme-name='Faenza-Dark'
+theme-name='Numix'

@@ -48,3 +48,6 @@ uucp:x:14:
 uuidd:x:68:
 video:x:91:
 wheel:x:10:root
+lightdm:x:620:
+nopasswdlogin:x:619:
+rtkit:x:133:
