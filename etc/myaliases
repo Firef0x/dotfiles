@@ -50,6 +50,8 @@ alias chgrp='chgrp --preserve-root'
 alias chmod='chmod --preserve-root'
 alias chown='chown --preserve-root'
 alias find='sudo find'
+alias ju=' sudo journalctl -u'
+alias jxe=' sudo journalctl -xe'
 alias ka='sudo killall'
 alias ln='ln -i'
 alias shred=' shred -v'
@@ -70,6 +72,7 @@ alias Qi='pacman -Qi'
 alias Ql='pacman -Ql'
 alias Qm='pacman -Qm'
 alias Qpi='pacman -Qpi'
+alias Qpl='pacman -Qpl'
 alias Qs='pacman -Qs'
 alias Qtd='pacman -Qtd'
 # }}}
@@ -97,6 +100,7 @@ alias pU='pacman -U'
 # }}}
 
 #     Makepkg && Mkaurball {{{3
+alias Asc='makepkg -Asc'
 alias Asic='makepkg -Asic'
 alias Asi='makepkg -Asi'
 alias Ase='makepkg -Ase'
@@ -167,7 +171,7 @@ ngrep()
 # Grep process name
 psg()
 {
-  ps auxww | ag $1 | ag -v ag
+  ps auxww | a0 $1 | a0 -v ag
 }
 # }}}
 
@@ -177,14 +181,14 @@ rsogou()
 {
   fcitx --replace
   pkill 'sogou-qimpanel*'
-  sogou-qimpanel &
+  sogou-qimpanel & 2>/dev/null
 }
 # }}}
 
 #   Systemd functions aliases {{{2
 sudo_commands=(daemon-reload emergency halt hibernate rescue)
 for c in $sudo_commands; do
-  alias sc-$c="sudo systemctl $c"
+  alias sc-$c=" sudo systemctl $c"
 done
 # 重启 (拼音首字母)
 alias cq=" sudo systemctl reboot"
