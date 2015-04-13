@@ -4,7 +4,7 @@ usage () {
 Usage: $0 <Command> <Path to repo> <Packages> ...
 Command:
   a               Add packages to repo
-  d               Remove packages from repo
+  r               Remove packages from repo
   h, -h, --help   Print this message and exit
 EOF
 }
