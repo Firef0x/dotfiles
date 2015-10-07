@@ -1,13 +1,14 @@
 #    yaourtrc  - Configuration for yaourt
-# 
+#
 #   See yaourtrc(5) for more information
-#   
+#
 #
 
 # General
 #AUTOSAVEBACKUPFILE=0
 #DEVELSRCDIR=""
 #DEVEL=0
+#VISUAL="$VISUAL"
 #EDITOR="$EDITOR"
 #FORCEENGLISH=0
 #FORCE=0
@@ -31,6 +32,7 @@
 #AURSEARCH=1
 #AURUPGRADE=0
 #AURVOTE=1
+#AURUSEGIT=0
 
 # Build
 #EXPORT=0           # Export to 1: EXPORTDIR or PKGDEST
@@ -55,6 +57,7 @@ PU_NOCONFIRM=1     # Add --noconfirm to $PACMAN -U
 
 # Command
 #PACMAN="pacman"
+#MAKEPKG="makepkg"
 #DIFFEDITCMD="vimdiff"
 
 # pacdiffviewer

@@ -26,7 +26,7 @@ nobody:x:99:
 optical:x:93:
 polkitd:x:102:
 power:x:98:
-proc:x:26:
+proc:x:26:polkitd
 rfkill:x:24:
 root:x:0:root
 scanner:x:96:
@@ -48,6 +48,6 @@ uucp:x:14:
 uuidd:x:68:
 video:x:91:
 wheel:x:10:root
-lightdm:x:620:
 nopasswdlogin:x:619:
 rtkit:x:133:
+lightdm:x:620:

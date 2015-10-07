@@ -40,13 +40,14 @@ pushd $ABSOLUTE_PATH >/dev/null
 for f in adobe/mms.cfg \
          asd.conf \
          bash.bashrc \
-         burg.d/40_custom conf.d/dnscrypt-proxy \
+         burg.d/40_custom \
          ca-certificates/conf.d/goagent.conf \
          default/burg \
          default/cpupower \
          default/phc-intel \
          default/ufw \
          default/useradd \
+         dhcpcd.conf \
          dnsmasq.conf \
          e4rat-lite.conf \
          environment \
@@ -55,6 +56,7 @@ for f in adobe/mms.cfg \
          gimp/2.0/fonts.conf \
          inputrc \
          lightdm/lightdm.conf.d/60-my-unity-greeter.conf \
+         lightdm/lightdm-gtk-greeter.conf \
          locale.conf \
          makepkg.conf \
          mkinitcpio.d/linux-ck.preset \
@@ -82,7 +84,6 @@ for f in adobe/mms.cfg \
          timezone \
          tsocks.conf \
          vconsole.conf \
-         X11/xinit/xinitrc.d/infinality-settings \
          xdg/menus/arch-applications.menu \
          yaourtrc; do
   update ${ETC_PATH}/$f ${ABSOLUTE_ETC_PATH}/$f
