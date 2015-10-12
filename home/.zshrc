@@ -1,5 +1,10 @@
 # Path to your oh-my-zsh installation.
-ZSH=/usr/share/oh-my-zsh/
+if  [[ "$OSTYPE" = darwin* ]]; then
+  ZSH=$HOME/.oh-my-zsh/
+elif [[  $('uname') == 'Linux' ]]; then
+  ZSH=/usr/share/oh-my-zsh/
+fi
+
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -7,7 +12,11 @@ ZSH=/usr/share/oh-my-zsh/
 # time that oh-my-zsh is loaded.
 ZSH_THEME="agnoster"
 
-DEFAULT_USER="f"
+if  [[ "$OSTYPE" = darwin* ]]; then
+  DEFAULT_USER="f22z"
+elif [[  $('uname') == 'Linux' ]]; then
+  DEFAULT_USER="f"
+fi
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -47,7 +56,11 @@ DISABLE_AUTO_UPDATE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(autojump extract fbterm git history-substring-search systemd svn tmux vi-mode)
+if  [[ "$OSTYPE" = darwin* ]]; then
+  plugins=(autojump brew brew-cask extract git history-substring-search node npm osx svn tmux vi-mode zsh-syntax-highlighting)
+elif [[  $('uname') == 'Linux' ]]; then
+  plugins=(autojump extract fbterm git history-substring-search node npm systemd svn tmux vi-mode zsh-syntax-highlighting)
+fi
 
 source $ZSH/oh-my-zsh.sh
 
@@ -66,8 +79,8 @@ source $ZSH/oh-my-zsh.sh
 
 # 命令渐进提示
 ## auto-fu.zsh stuff.
-# source /home/f/codes/auto-fu.zsh/auto-fu.zsh
-{ . /home/f/.zsh/auto-fu; auto-fu-install; }
+# source $HOME/codes/auto-fu.zsh/auto-fu.zsh
+{ . $HOME/.zsh/auto-fu; auto-fu-install; }
 zstyle ':auto-fu:highlight' input bold
 zstyle ':auto-fu:highlight' completion fg=black,bold
 zstyle ':auto-fu:highlight' completion/one fg=white,bold,underline
@@ -80,11 +93,19 @@ zle -N zle-keymap-select auto-fu-zle-keymap-select
 source /etc/myenvvar
 source /etc/myaliases
 
-# 拼音补全
-source /usr/share/pinyin-completion/shell/pinyin-comp.zsh
+if  [[ "$OSTYPE" = darwin* ]]; then
+  # 拼音补全
+  # source /usr/share/pinyin-completion/shell/pinyin-comp.zsh
 
-# Powerline
-. /usr/share/zsh/site-contrib/powerline.zsh
+  # Powerline
+  . /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
+elif [[  $('uname') == 'Linux' ]]; then
+  # 拼音补全
+  source /usr/share/pinyin-completion/shell/pinyin-comp.zsh
+
+  # Powerline
+  . /usr/share/zsh/site-contrib/powerline.zsh
+fi
 
 # 在没有输入任何内容的情况下按 TAB ，自动填入 "cd [TAB]"
 user-complete(){
