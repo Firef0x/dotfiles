@@ -1,0 +1,47 @@
+{
+  "profiles": {
+    "ag": {
+      "class": "Zoom::Profile::Ag",
+      "flags": "-S --color-match \"47;1;30\" --color-line-number \"0;37\" --ignore=\"*.pdf\"",
+      "prepend": "",
+      "append": "",
+      "operator": "/usr/local/bin/ag"
+    },
+    "all": {
+      "class": "Zoom::Profile::Ag",
+      "flags": "-uS --color-match \"47;1;30\" --color-line-number \"0;37\"",
+      "prepend": "",
+      "append": "",
+      "operator": "/usr/local/bin/ag"
+    },
+    "default": {
+      "class": "Zoom::Profile::Ag",
+      "flags": "--hidden --smart-case --follow --color-match \"47;1;30\" --color-line-number \"0;37\" --ignore=\"*.pdf\"",
+      "prepend": "",
+      "append": "",
+      "operator": "/usr/local/bin/ag"
+    },
+    "grep": {
+      "class": "Zoom::Profile::Grep",
+      "flags": "--color=always -EHIinR --exclude-dir=.bzr --exclude-dir=.git --exclude-dir=.svn",
+      "prepend": "GREP_COLORS=\"fn=1;32:ln=0;37:ms=47;1;30:mc=47;1;30:sl=:cx=:bn=:se=\"",
+      "append": ".",
+      "operator": "/usr/local/bin/ggrep"
+    },
+    "passwords": {
+      "class": "Zoom::Profile::Passwords",
+      "flags": "",
+      "prepend": "",
+      "append": "/usr/local/bin/ag is not installed!",
+      "operator": "/usr/local/bin/gecho"
+    },
+    "zoom_find": {
+      "class": "Zoom::Profile::Find",
+      "flags": ". -name",
+      "prepend": "",
+      "append": "",
+      "operator": "/usr/bin/find"
+    }
+  },
+  "editor": "/usr/local/bin/mvim --remote-silent"
+}
