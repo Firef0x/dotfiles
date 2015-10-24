@@ -2,6 +2,12 @@
 #
 
 #  Customize Environment Variable {{{1
+#    If  /usr/local/bin exists and is a directory & if /usr/local/bin is not already in your $PATH {{{2
+#    then export /usr/local/bin to your $PATH.
+if [[ -d /usr/local/bin && -z $(echo $PATH | grep -o /usr/local/bin) ]]; then
+    export PATH="/usr/local/bin:$PATH"
+fi
+# }}}
 #    If  /usr/local/sbin exists and is a directory & if /usr/local/sbin is not already in your $PATH {{{2
 #    then export /usr/local/sbin to your $PATH.
 if [[ -d /usr/local/sbin && -z $(echo $PATH | grep -o /usr/local/sbin) ]]; then
@@ -12,6 +18,21 @@ fi
 #    then export ~/bin to your $PATH.
 if [[ -d $HOME/bin && -z $(echo $PATH | grep -o $HOME/bin) ]]; then
     export PATH="$HOME/bin:$PATH"
+fi
+# }}}
+# for Mac Homebrew.
+#    If  /usr/local/Cellar/coreutils/8.24/libexec/gnubin exists and is a directory {{{2
+#    & if /usr/local/Cellar/coreutils/8.24/libexec/gnubin is not already in your $PATH
+#    then export /usr/local/Cellar/coreutils/8.24/libexec/gnubin to your $PATH.
+if [[ -d /usr/local/Cellar/coreutils/8.24/libexec/gnubin && -z $(echo $PATH | grep -o /usr/local/Cellar/coreutils/8.24/libexec/gnubin) ]]; then
+    export PATH="/usr/local/Cellar/coreutils/8.24/libexec/gnubin:$PATH"
+fi
+# }}}
+#    If  /usr/local/Cellar/gnu-sed/4.22/libexec/gnubin exists and is a directory {{{2
+#    & if /usr/local/Cellar/gnu-sed/4.22/libexec/gnubin is not already in your $PATH
+#    then export /usr/local/Cellar/gnu-sed/4.22/libexec/gnubin to your $PATH.
+if [[ -d /usr/local/Cellar/gnu-sed/4.22/libexec/gnubin && -z $(echo $PATH | grep -o /usr/local/Cellar/gnu-sed/4.22/libexec/gnubin) ]]; then
+    export PATH="/usr/local/Cellar/gnu-sed/4.22/libexec/gnubin:$PATH"
 fi
 # }}}
 # }}}
