@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-if  [[ "$OSTYPE" = darwin* ]]; then
+if [[ "$OSTYPE" = darwin* ]]; then
   ZSH=$HOME/.oh-my-zsh/
 elif [[  $('uname') == 'Linux' ]]; then
   ZSH=/usr/share/oh-my-zsh/
@@ -12,7 +12,7 @@ fi
 # time that oh-my-zsh is loaded.
 ZSH_THEME="agnoster"
 
-if  [[ "$OSTYPE" = darwin* ]]; then
+if [[ "$OSTYPE" = darwin* ]]; then
   DEFAULT_USER="f22z"
 elif [[  $('uname') == 'Linux' ]]; then
   DEFAULT_USER="f"
@@ -56,7 +56,7 @@ DISABLE_AUTO_UPDATE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-if  [[ "$OSTYPE" = darwin* ]]; then
+if [[ "$OSTYPE" = darwin* ]]; then
   plugins=(autojump brew brew-cask extract git history-substring-search node npm osx svn tmux vi-mode zsh-syntax-highlighting)
 elif [[  $('uname') == 'Linux' ]]; then
   plugins=(autojump extract fbterm git history-substring-search node npm systemd svn tmux vi-mode zsh-syntax-highlighting)
@@ -93,7 +93,7 @@ zle -N zle-keymap-select auto-fu-zle-keymap-select
 source /etc/myenvvar
 source /etc/myaliases
 
-if  [[ "$OSTYPE" = darwin* ]]; then
+if [[ "$OSTYPE" = darwin* ]]; then
   # 拼音补全
   # source /usr/share/pinyin-completion/shell/pinyin-comp.zsh
 
@@ -152,5 +152,12 @@ compdef _git ggca=git-gc
 
 # Set Zsh completion for osc
 export ZSH_OSC_PROJECTS_EXTRA="home:firef0x home:firef0x:testing"
+
+if [[ "$OSTYPE" = darwin* ]]; then
+  # Opt out Homebrew analytics
+  export HOMEBREW_NO_ANALYTICS=1
+  # 替换 homebrew bottles 为中科大源
+  export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
+fi
 
 # vim:filetype=zsh:foldmethod=marker:autoindent:expandtab:shiftwidth=2:tabstop=2:softtabstop=2
