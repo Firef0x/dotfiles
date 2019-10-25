@@ -75,7 +75,6 @@ for f in .bash_profile \
          .compton.conf \
          .conkyrc \
          .dmrc \
-         .eslintrc \
          .fbtermrc \
          .gemrc \
          .gitconfig \
