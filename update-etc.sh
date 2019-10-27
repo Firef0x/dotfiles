@@ -16,7 +16,7 @@ fail() {
 update() {
   local src=$1
   local dest=$2
-  [ !  -e "$src" ] && fail "Copy source does not exist: $src"
+  [ !  -e "$src" ] && echo "Copy source does not exist: $src" && return 1
 
   #if the source is a symlink, make sure its up-to-date
   if [ -h "$dest" ]; then
