@@ -2,6 +2,14 @@
 #
 
 #  Customize Environment Variable {{{1
+#    export LC_ALL & LANG & JAVA_HOME for macOS {{{2
+if [[ "$OSTYPE" = darwin* ]]; then
+	export LC_ALL=zh_CN.UTF-8
+	export LANG=zh_CN.UTF-8
+	export JAVA_HOME=`/usr/libexec/java_home -v 11`
+	export PATH="${JAVA_HOME}/bin:$PATH"
+fi
+# }}}
 #    If  /usr/local/bin exists and is a directory & if /usr/local/bin is not already in your $PATH {{{2
 #    then export /usr/local/bin to your $PATH.
 if [[ -d /usr/local/bin && -z $(echo $PATH | grep -o /usr/local/bin) ]]; then
@@ -21,18 +29,25 @@ if [[ -d $HOME/bin && -z $(echo $PATH | grep -o $HOME/bin) ]]; then
 fi
 # }}}
 # for Mac Homebrew.
-#    If  /usr/local/Cellar/coreutils/8.27/libexec/gnubin exists and is a directory {{{2
-#    & if /usr/local/Cellar/coreutils/8.27/libexec/gnubin is not already in your $PATH
-#    then export /usr/local/Cellar/coreutils/8.27/libexec/gnubin to your $PATH.
-if [[ -d /usr/local/Cellar/coreutils/8.27/libexec/gnubin && -z $(echo $PATH | grep -o /usr/local/Cellar/coreutils/8.27/libexec/gnubin) ]]; then
-    export PATH="/usr/local/Cellar/coreutils/8.27/libexec/gnubin:$PATH"
+#    If  /usr/local/opt/coreutils/libexec/gnubin exists and is a directory {{{2
+#    & if /usr/local/opt/coreutils/libexec/gnubin is not already in your $PATH
+#    then export /usr/local/opt/coreutils/libexec/gnubin to your $PATH.
+if [[ -d /usr/local/opt/coreutils/libexec/gnubin && -z $(echo $PATH | grep -o /usr/local/opt/coreutils/libexec/gnubin) ]]; then
+    export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 fi
 # }}}
-#    If  /usr/local/Cellar/gnu-sed/4.4/libexec/gnubin exists and is a directory {{{2
-#    & if /usr/local/Cellar/gnu-sed/4.4/libexec/gnubin is not already in your $PATH
-#    then export /usr/local/Cellar/gnu-sed/4.4/libexec/gnubin to your $PATH.
-if [[ -d /usr/local/Cellar/gnu-sed/4.4/libexec/gnubin && -z $(echo $PATH | grep -o /usr/local/Cellar/gnu-sed/4.4/libexec/gnubin) ]]; then
-    export PATH="/usr/local/Cellar/gnu-sed/4.4/libexec/gnubin:$PATH"
+#    If  /usr/local/opt/gnu-sed/libexec/gnubin exists and is a directory {{{2
+#    & if /usr/local/opt/gnu-sed/libexec/gnubin is not already in your $PATH
+#    then export /usr/local/opt/gnu-sed/libexec/gnubin to your $PATH.
+if [[ -d /usr/local/opt/gnu-sed/libexec/gnubin && -z $(echo $PATH | grep -o /usr/local/opt/gnu-sed/libexec/gnubin) ]]; then
+    export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+fi
+# }}}
+#    If  /usr/local/opt/node/bin exists and is a directory {{{2
+#    & if /usr/local/opt/node/bin is not already in your $PATH
+#    then export /usr/local/opt/node/bin to your $PATH.
+if [[ -d /usr/local/opt/node/bin && -z $(echo $PATH | grep -o /usr/local/opt/node/bin) ]]; then
+    export PATH="/usr/local/opt/node/bin:$PATH"
 fi
 # }}}
 # }}}
