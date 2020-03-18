@@ -57,9 +57,9 @@ DISABLE_AUTO_UPDATE="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 if [[ "$OSTYPE" = darwin* ]]; then
-  plugins=(autojump extract git gulp history-substring-search node npm osx pip python sudo svn tmux vi-mode xcode yarn)
+  plugins=(autojump docker extract git gulp history-substring-search node npm osx pip python sudo svn tmux vi-mode vscode xcode yarn)
 elif [[  $('uname') == 'Linux' ]]; then
-  plugins=(autojump extract fbterm git gulp history-substring-search node npm pip python sudo svn systemd tmux vi-mode yarn)
+  plugins=(autojump docker extract fbterm git gulp history-substring-search node npm pip python sudo svn systemd tmux vi-mode yarn)
 fi
 
 source $ZSH/oh-my-zsh.sh
