@@ -50,6 +50,13 @@ if [[ -d /usr/local/opt/node/bin && -z $(echo $PATH | grep -o /usr/local/opt/nod
     export PATH="/usr/local/opt/node/bin:$PATH"
 fi
 # }}}
+#    If  /usr/local/opt/proxychains-ng/bin exists and is a directory {{{2
+#    & if /usr/local/opt/proxychains-ng/bin is not already in your $PATH
+#    then export /usr/local/opt/proxychains-ng/bin to your $PATH.
+if [[ -d /usr/local/opt/proxychains-ng/bin && -z $(echo $PATH | grep -o /usr/local/opt/proxychains-ng/bin) ]]; then
+    export PATH="/usr/local/opt/proxychains-ng/bin:$PATH"
+fi
+# }}}
 # }}}
 #  Vim Modeline: {{{1
 # vim:ft=sh:fdm=marker:ai:et:sw=2:ts=2:sts=2:
