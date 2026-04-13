@@ -1,3 +1,5 @@
+# Enable iTerm2 shell integration
+zstyle :omz:plugins:iterm2 shell-integration yes
 # Path to your oh-my-zsh installation.
 if [[ "$OSTYPE" = darwin* ]]; then
   ZSH=$HOME/.oh-my-zsh/
@@ -57,7 +59,7 @@ DISABLE_AUTO_UPDATE="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 if [[ "$OSTYPE" = darwin* ]]; then
-  plugins=(autojump docker extract git gulp history-substring-search macos node npm pip python sudo svn tmux vi-mode vscode xcode yarn)
+  plugins=(autojump azure bun docker extract gh git gulp history-substring-search macos node npm pip python sudo svn terraform tmux uv vi-mode vscode xcode yarn)
   [ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
   ## ZSH completions setup
   if type brew &>/dev/null; then
