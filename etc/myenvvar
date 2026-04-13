@@ -6,7 +6,7 @@
 if [[ "$OSTYPE" = darwin* ]]; then
 	export LC_ALL=zh_CN.UTF-8
 	export LANG=zh_CN.UTF-8
-	export JAVA_HOME=`/usr/libexec/java_home -v 11`
+	export JAVA_HOME=`/usr/libexec/java_home -v 17`
 	export PATH="${JAVA_HOME}/bin:$PATH"
 fi
 # }}}
@@ -29,32 +29,44 @@ if [[ -d $HOME/bin && -z $(echo $PATH | grep -o $HOME/bin) ]]; then
 fi
 # }}}
 # for Mac Homebrew.
-#    If  /usr/local/opt/coreutils/libexec/gnubin exists and is a directory {{{2
-#    & if /usr/local/opt/coreutils/libexec/gnubin is not already in your $PATH
-#    then export /usr/local/opt/coreutils/libexec/gnubin to your $PATH.
-if [[ -d /usr/local/opt/coreutils/libexec/gnubin && -z $(echo $PATH | grep -o /usr/local/opt/coreutils/libexec/gnubin) ]]; then
-    export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+#    If  /opt/homebrew/opt/coreutils/libexec/gnubin exists and is a directory {{{2
+if [[ -d /opt/homebrew/share/zsh-syntax-highlighting/highlighters ]]; then
+    export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/opt/homebrew/share/zsh-syntax-highlighting/highlighters
 fi
 # }}}
-#    If  /usr/local/opt/gnu-sed/libexec/gnubin exists and is a directory {{{2
-#    & if /usr/local/opt/gnu-sed/libexec/gnubin is not already in your $PATH
-#    then export /usr/local/opt/gnu-sed/libexec/gnubin to your $PATH.
-if [[ -d /usr/local/opt/gnu-sed/libexec/gnubin && -z $(echo $PATH | grep -o /usr/local/opt/gnu-sed/libexec/gnubin) ]]; then
-    export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+#    If  /opt/homebrew/opt/coreutils/libexec/gnubin exists and is a directory {{{2
+#    & if /opt/homebrew/opt/coreutils/libexec/gnubin is not already in your $PATH
+#    then export /opt/homebrew/opt/coreutils/libexec/gnubin to your $PATH.
+if [[ -d /opt/homebrew/opt/coreutils/libexec/gnubin && -z $(echo $PATH | grep -o /opt/homebrew/opt/coreutils/libexec/gnubin) ]]; then
+    export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 fi
 # }}}
-#    If  /usr/local/opt/node/bin exists and is a directory {{{2
-#    & if /usr/local/opt/node/bin is not already in your $PATH
-#    then export /usr/local/opt/node/bin to your $PATH.
-if [[ -d /usr/local/opt/node/bin && -z $(echo $PATH | grep -o /usr/local/opt/node/bin) ]]; then
-    export PATH="/usr/local/opt/node/bin:$PATH"
+#    If  /opt/homebrew/opt/gnu-sed/libexec/gnubin exists and is a directory {{{2
+#    & if /opt/homebrew/opt/gnu-sed/libexec/gnubin is not already in your $PATH
+#    then export /opt/homebrew/opt/gnu-sed/libexec/gnubin to your $PATH.
+if [[ -d /opt/homebrew/opt/gnu-sed/libexec/gnubin && -z $(echo $PATH | grep -o /opt/homebrew/opt/gnu-sed/libexec/gnubin) ]]; then
+    export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 fi
 # }}}
-#    If  /usr/local/opt/proxychains-ng/bin exists and is a directory {{{2
-#    & if /usr/local/opt/proxychains-ng/bin is not already in your $PATH
-#    then export /usr/local/opt/proxychains-ng/bin to your $PATH.
-if [[ -d /usr/local/opt/proxychains-ng/bin && -z $(echo $PATH | grep -o /usr/local/opt/proxychains-ng/bin) ]]; then
-    export PATH="/usr/local/opt/proxychains-ng/bin:$PATH"
+#    If  /opt/homebrew/opt/node/bin exists and is a directory {{{2
+#    & if /opt/homebrew/opt/node/bin is not already in your $PATH
+#    then export /opt/homebrew/opt/node/bin to your $PATH.
+if [[ -d /opt/homebrew/opt/node/bin && -z $(echo $PATH | grep -o /opt/homebrew/opt/node/bin) ]]; then
+    export PATH="/opt/homebrew/opt/node/bin:$PATH"
+fi
+# }}}
+#    If  /opt/homebrew/opt/postgresql@18/bin exists and is a directory {{{2
+#    & if /opt/homebrew/opt/postgresql@18/bin is not already in your $PATH
+#    then export /opt/homebrew/opt/postgresql@18/bin to your $PATH.
+if [[ -d /opt/homebrew/opt/postgresql@18/bin && -z $(echo $PATH | grep -o /opt/homebrew/opt/postgresql@18/bin) ]]; then
+    export PATH="/opt/homebrew/opt/postgresql@18/bin:$PATH"
+fi
+# }}}
+#    If  /opt/homebrew/opt/proxychains-ng/bin exists and is a directory {{{2
+#    & if /opt/homebrew/opt/proxychains-ng/bin is not already in your $PATH
+#    then export /opt/homebrew/opt/proxychains-ng/bin to your $PATH.
+if [[ -d /opt/homebrew/opt/proxychains-ng/bin && -z $(echo $PATH | grep -o /opt/homebrew/opt/proxychains-ng/bin) ]]; then
+    export PATH="/opt/homebrew/opt/proxychains-ng/bin:$PATH"
 fi
 # }}}
 # }}}

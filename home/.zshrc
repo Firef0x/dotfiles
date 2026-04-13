@@ -57,7 +57,15 @@ DISABLE_AUTO_UPDATE="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 if [[ "$OSTYPE" = darwin* ]]; then
-  plugins=(autojump docker extract git gulp history-substring-search node npm osx pip python sudo svn tmux vi-mode vscode xcode yarn)
+  plugins=(autojump docker extract git gulp history-substring-search macos node npm pip python sudo svn tmux vi-mode vscode xcode yarn)
+  [ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
+  ## ZSH completions setup
+  if type brew &>/dev/null; then
+    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+
+    autoload -Uz compinit
+    compinit
+  fi
 elif [[  $('uname') == 'Linux' ]]; then
   plugins=(autojump docker extract fbterm git gulp history-substring-search node npm pip python sudo svn systemd tmux vi-mode yarn)
 fi
@@ -94,11 +102,17 @@ source /etc/myenvvar
 source /etc/myaliases
 
 if [[ "$OSTYPE" = darwin* ]]; then
-  # 拼音补全
+  # 拼音补全(不好用)
   # source /usr/share/pinyin-completion/shell/pinyin-comp.zsh
 
-  # Powerline
-  . /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
+  # Powerline(Deprecated)
+  # . /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
+
+  # ZSH syntax highlighting
+  source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+  # iTerm2 shell integration
+  test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 elif [[  $('uname') == 'Linux' ]]; then
   # 拼音补全
   source /usr/share/pinyin-completion/shell/pinyin-comp.zsh
@@ -158,6 +172,10 @@ if [[ "$OSTYPE" = darwin* ]]; then
   export HOMEBREW_NO_ANALYTICS=1
   # 替换 homebrew bottles 为中科大源
   export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
+  # Add bun in PATH as it's installed in $HOME/.bun
+  export BUN_INSTALL="$HOME/.bun"
+  export PATH="$BUN_INSTALL/bin:$PATH"
 fi
 
 # vim:filetype=zsh:foldmethod=marker:autoindent:expandtab:shiftwidth=2:tabstop=2:softtabstop=2
+
