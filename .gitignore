@@ -2,3 +2,9 @@ __pycache__
 *.py[cod]
 *~
 .DS_Store
+
+# Agents & Claude
+!home/.claude/skills
+home/.claude/
+home/.agents/skills/.claude/
+home/.agents/_agents.mount_config

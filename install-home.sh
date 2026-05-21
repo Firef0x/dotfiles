@@ -70,7 +70,8 @@ git submodule update
 # }}}
 
 #  Symlink dotfiles & dirs {{{2
-for f in .bash_profile \
+for f in .agents \
+         .bash_profile \
          .bashrc \
          .compton.conf \
          .conkyrc \

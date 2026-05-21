@@ -1,0 +1,40 @@
+{
+  "version": 3,
+  "skills": {
+    "pdf-converter": {
+      "source": "tanis90/pdf-converter-mineru",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/tanis90/pdf-converter-mineru.git",
+      "skillPath": "SKILL.md",
+      "skillFolderHash": "50c47576447f98d736679d45b85ba9a7267fa314",
+      "installedAt": "2026-04-19T11:41:18.678Z",
+      "updatedAt": "2026-04-19T11:41:18.678Z"
+    },
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/skills.git",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "skillFolderHash": "3013fdeb8a11b10b1eb795ec3ae8bfca38f7c26d",
+      "installedAt": "2026-04-19T11:41:31.069Z",
+      "updatedAt": "2026-04-19T11:41:31.069Z"
+    }
+  },
+  "dismissed": {
+    "findSkillsPrompt": true
+  },
+  "lastSelectedAgents": [
+    "amp",
+    "antigravity",
+    "cline",
+    "codex",
+    "cursor",
+    "deepagents",
+    "firebender",
+    "gemini-cli",
+    "github-copilot",
+    "kimi-cli",
+    "opencode",
+    "warp"
+  ]
+}
