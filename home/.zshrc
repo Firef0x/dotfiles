@@ -1,5 +1,5 @@
-# Enable iTerm2 shell integration
-zstyle :omz:plugins:iterm2 shell-integration yes
+# Enable iTerm2 shell integration(Deprecated, use cmux instead)
+# zstyle :omz:plugins:iterm2 shell-integration yes
 # Path to your oh-my-zsh installation.
 if [[ "$OSTYPE" = darwin* ]]; then
   ZSH=$HOME/.oh-my-zsh/
@@ -59,7 +59,7 @@ DISABLE_AUTO_UPDATE="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 if [[ "$OSTYPE" = darwin* ]]; then
-  plugins=(autojump azure bun docker extract gh git gulp history-substring-search macos node npm pip python sudo svn terraform tmux uv vi-mode vscode xcode yarn)
+  plugins=(autojump brew bun docker extract gh git gulp history-substring-search kn macos node npm oc pip python sudo svn terraform tmux uv vi-mode vscode xcode yarn zsh-autosuggestions)
   [ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
   ## ZSH completions setup
   if type brew &>/dev/null; then
@@ -113,8 +113,8 @@ if [[ "$OSTYPE" = darwin* ]]; then
   # ZSH syntax highlighting
   source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-  # iTerm2 shell integration
-  test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+  # iTerm2 shell integration(Deprecated, use cmux instead)
+  # test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 elif [[  $('uname') == 'Linux' ]]; then
   # 拼音补全
   source /usr/share/pinyin-completion/shell/pinyin-comp.zsh
@@ -176,7 +176,7 @@ if [[ "$OSTYPE" = darwin* ]]; then
   export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
   # Add bun in PATH as it's installed in $HOME/.bun
   export BUN_INSTALL="$HOME/.bun"
-  export PATH="$BUN_INSTALL/bin:$PATH"
+  export PATH="$HOME/.local/bin:$BUN_INSTALL/bin:$PATH"
 fi
 
 # vim:filetype=zsh:foldmethod=marker:autoindent:expandtab:shiftwidth=2:tabstop=2:softtabstop=2
